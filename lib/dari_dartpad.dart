@@ -70,22 +70,38 @@ class _NavigationExampleState extends State<NavigationExample> {
         /// Home page
         Scaffold(
           appBar: AppBar(title: Text('Beranda'),),
-          body: Card(
-            shadowColor: Colors.transparent,
-            margin: const EdgeInsets.all(8.0),
+          body: Center(
             child: Column(
               children: [
-                SizedBox.expand(
-                  child: Center(
-                    child: Text(
-                      'Home page',
-                      style: theme.textTheme.titleLarge,
-                    ),
+                
+                // informasi status gizi
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.grey,
                   ),
+                  margin: EdgeInsets.all(10),
+                  height: 150,
+                  child: Center(
+                    child: Text("Status Gizi"),
+                  ),
+                ),
+                
+                // informasi aktifitas fisik
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.grey,
+                  ),
+                  margin: EdgeInsets.all(10),
+                  height: 150,
+                  child: Center(
+                    child: Text("Aktifitas FIsik"),
+                  )
                 ),
               ],
             ),
-          ),
+          )
         ),
 
         /// Status page
