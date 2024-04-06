@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projek_app/components/my_button.dart';
 import 'package:flutter_projek_app/components/my_textfield.dart';
@@ -6,23 +7,39 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   // text editing controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   // sign user method
-  void signUserIn() {}
+  void signUserIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text, 
+      password: passwordController.text,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {}, 
+            icon: const Icon(Icons.arrow_right_alt),
+            ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // logo
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20.0),
                 child: Text("Login", 
                   style: TextStyle(
                     fontSize: 60,
@@ -32,10 +49,10 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 20),
           
-              // username
+              // email
               MyTextField(
-                controller: usernameController,
-                hintText: 'Username',
+                controller: emailController,
+                hintText: 'Email',
                 obscureText: false,
               ),
 
@@ -46,6 +63,7 @@ class LoginPage extends StatelessWidget {
                 controller: passwordController,
                 hintText: 'Password',
                 obscureText: true,
+                
               ),
 
               const SizedBox(height: 10),
@@ -100,6 +118,8 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
+
+              const SizedBox(height: 20),
           
               // google sign in button
               Row(
@@ -107,28 +127,28 @@ class LoginPage extends StatelessWidget {
                 children: [
                   // google button
                   Container(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.grey[400],
+                      color: Colors.white,
                       ),
-                    child: Text(
-                      "G", 
-                      style: TextStyle(fontSize: 32),
-                    )
+                    child: Image.asset(
+                      'assets/images/google.png',
+                      height: 40,
+                    ),
                   )
                 ],
               ),
 
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
           
               // register
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Not a member?"),
-                  const SizedBox(width: 4,),
+                  SizedBox(width: 4,),
                   Text(
                     "Register now",
                     style: TextStyle(

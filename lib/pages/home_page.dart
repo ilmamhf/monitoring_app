@@ -1,125 +1,223 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final PageController pageController = PageController(initialPage: 0);
+  int currentPageIndex = 0;
 
-  late int _selectedIndex = 0;
+  void _print() {
+    print("tes");
+  }
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bottom Navigation Bar'),
-        centerTitle: true,
-      ),
-      extendBody: true,
-      body: PageView(
-        controller: pageController,
-        children: const <Widget>[
-          Center(
-            child: Home(),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        indicatorColor: Colors.amber,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
           ),
-          Center(
-            child: Search(),
+          NavigationDestination(
+            icon: Badge(child: Icon(Icons.monitor_weight)),
+            label: 'Status Gizi',
           ),
-          Center(
-            child: Favourite(),
+          NavigationDestination(
+            icon: Badge(
+              label: Text('2'),
+              child: Icon(Icons.directions_run),
+            ),
+            label: 'Aktifitas Fisik',
           ),
-          Center(
-            child: Profile(),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.person_2),
+            icon: Icon(Icons.person_2_outlined),
+            label: 'Profile',
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        // notchMargin: 5.0,
-        clipBehavior: Clip.antiAlias,
-        child: SizedBox(
-          height: kBottomNavigationBarHeight,
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
-            backgroundColor: Colors.green,
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.black,
-            onTap: (index) {
-              setState(() {
-                _selectedIndex = index;
-                pageController.jumpToPage(index);
-              });
-            },
-            items: const [
+      body: <Widget>[
+        /// Home page
+        Scaffold(
+          appBar: AppBar(title: const Text('Beranda'),),
+          body: Center(
+            child: Column(
+              children: [
+                
+                // informasi status gizi
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.grey,
+                  ),
+                  margin: const EdgeInsets.all(10),
+                  height: 150,
+                  child: const Center(
+                    child: const Text("Status Gizi"),
+                  ),
+                ),
+                
+                // informasi aktifitas fisik
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Colors.grey,
+                  ),
+                  margin: const EdgeInsets.all(10),
+                  height: 150,
+                  child: const Center(
+                    child: Text("Aktifitas FIsik"),
+                  )
+                ),
+              ],
+            ),
+          )
+        ),
 
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_border_outlined),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle_outlined),
-                label: '',
-              ),
-            ],
+        /// Status page
+        Scaffold(
+          appBar: AppBar(title: const Text('Status Gizi'),),
+          body: const Center(
+            child: Column(
+              children: <Widget>[
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.monitor_weight),
+                    title: Text('Status 2'),
+                    subtitle: Text('statistik'),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.monitor_weight),
+                    title: Text('Status 1'),
+                    subtitle: Text('statistik'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _print,
+            child: const Icon(Icons.add),
           ),
         ),
-      ),
+
+        /// Aktifitas page
+        Scaffold(
+          appBar: AppBar(title: const Text('Aktifitas Fisik'),),
+          body: const Center(
+            child: Column(
+              children: <Widget>[
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.directions_run),
+                    title: Text('Aktifitas 2'),
+                    subtitle: Text('Isi aktifitas'),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.directions_run),
+                    title: Text('Aktifitas 1'),
+                    subtitle: Text('Isi aktifitas'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _print,
+            child: const Icon(Icons.add),
+          ),
+        ),
+
+        /// Profile page
+        Scaffold(
+          appBar: AppBar(title: const Text('Profil'),),
+          body: ListView(
+            children: [
+              const SizedBox(height: 50,),
+          
+              // profile picture
+              const Icon(
+                Icons.person,
+                size: 72,
+              ),
+          
+              // username
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.only(left: 15, bottom: 15),
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // judul
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Username", style: TextStyle(color: Colors.grey[500]),),
+          
+                        IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
+                      ],
+                    ),
+          
+                    // isi
+                    const Text("Yanto"),
+                  ],
+                ),
+              ),
+          
+              // email
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.only(left: 15, bottom: 15),
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // judul
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Email", style: TextStyle(color: Colors.grey[500]),),
+          
+                        IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
+                      ],
+                    ),
+          
+                    // isi
+                    const Text("Yanto@email.com"),
+                  ],
+                ),
+              ),
+          
+              
+            ],
+          ),
+        )
+      ][currentPageIndex],
     );
-  }
-}
-
-// Screens for the different bottom navigation items
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('Home');
-  }
-}
-
-class Search extends StatelessWidget {
-  const Search({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('Search');
-  }
-}
-
-class Favourite extends StatelessWidget {
-  const Favourite({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('Favourites');
-  }
-}
-
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('Profile');
   }
 }

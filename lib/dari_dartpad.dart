@@ -69,7 +69,7 @@ class _NavigationExampleState extends State<NavigationExample> {
       body: <Widget>[
         /// Home page
         Scaffold(
-          appBar: AppBar(title: Text('Beranda'),),
+          appBar: AppBar(title: const Text('Beranda'),),
           body: Center(
             child: Column(
               children: [
@@ -80,10 +80,10 @@ class _NavigationExampleState extends State<NavigationExample> {
                     borderRadius: BorderRadius.circular(8.0),
                     color: Colors.grey,
                   ),
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   height: 150,
-                  child: Center(
-                    child: Text("Status Gizi"),
+                  child: const Center(
+                    child: const Text("Status Gizi"),
                   ),
                 ),
                 
@@ -93,9 +93,9 @@ class _NavigationExampleState extends State<NavigationExample> {
                     borderRadius: BorderRadius.circular(8.0),
                     color: Colors.grey,
                   ),
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   height: 150,
-                  child: Center(
+                  child: const Center(
                     child: Text("Aktifitas FIsik"),
                   )
                 ),
@@ -106,8 +106,8 @@ class _NavigationExampleState extends State<NavigationExample> {
 
         /// Status page
         Scaffold(
-          appBar: AppBar(title: Text('Status Gizi'),),
-          body: Center(
+          appBar: AppBar(title: const Text('Status Gizi'),),
+          body: const Center(
             child: Column(
               children: <Widget>[
                 Card(
@@ -129,14 +129,14 @@ class _NavigationExampleState extends State<NavigationExample> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: _print,
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ),
 
         /// Aktifitas page
         Scaffold(
-          appBar: AppBar(title: Text('Aktifitas Fisik'),),
-          body: Center(
+          appBar: AppBar(title: const Text('Aktifitas Fisik'),),
+          body: const Center(
             child: Column(
               children: <Widget>[
                 Card(
@@ -158,13 +158,13 @@ class _NavigationExampleState extends State<NavigationExample> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: _print,
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ),
 
         /// Profile page
         Scaffold(
-          appBar: AppBar(title: Text('Profil'),),
+          appBar: AppBar(title: const Text('Profil'),),
           body: ListView(
             children: [
               const SizedBox(height: 50,),
@@ -181,8 +181,8 @@ class _NavigationExampleState extends State<NavigationExample> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: EdgeInsets.only(left: 15, bottom: 15),
-                margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                padding: const EdgeInsets.only(left: 15, bottom: 15),
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -192,12 +192,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                       children: [
                         Text("Username", style: TextStyle(color: Colors.grey[500]),),
           
-                        IconButton(onPressed: (){}, icon: Icon(Icons.settings))
+                        IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
                       ],
                     ),
           
                     // isi
-                    Text("Yanto"),
+                    const Text("Yanto"),
                   ],
                 ),
               ),
@@ -208,8 +208,8 @@ class _NavigationExampleState extends State<NavigationExample> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: EdgeInsets.only(left: 15, bottom: 15),
-                margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                padding: const EdgeInsets.only(left: 15, bottom: 15),
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -219,12 +219,12 @@ class _NavigationExampleState extends State<NavigationExample> {
                       children: [
                         Text("Email", style: TextStyle(color: Colors.grey[500]),),
           
-                        IconButton(onPressed: (){}, icon: Icon(Icons.settings))
+                        IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
                       ],
                     ),
           
                     // isi
-                    Text("Yanto@email.com"),
+                    const Text("Yanto@email.com"),
                   ],
                 ),
               ),
