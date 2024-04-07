@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'form_aktifitas_page.dart';
+
 class AktifitasPage extends StatelessWidget {
   const AktifitasPage({super.key});
 
@@ -32,7 +34,7 @@ class AktifitasPage extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: _print,
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FormAktifitasPage())),
             child: const Icon(Icons.add),
           ),
         );

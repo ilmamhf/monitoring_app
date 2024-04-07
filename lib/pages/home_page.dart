@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    // final ThemeData theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -28,28 +28,27 @@ class _HomePageState extends State<HomePage> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.transparent,
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home, color: Colors.blue,),
+            icon: Icon(Icons.home),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Badge(child: Icon(Icons.monitor_weight)),
+            selectedIcon: Icon(Icons.monitor_weight, color: Colors.blue,),
+            icon: Icon(Icons.monitor_weight),
             label: 'Status Gizi',
           ),
           NavigationDestination(
-            icon: Badge(
-              label: Text('2'),
-              child: Icon(Icons.directions_run),
-            ),
+            selectedIcon: Icon(Icons.directions_run, color: Colors.blue,),
+            icon: Icon(Icons.directions_run),
             label: 'Aktifitas Fisik',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person_2),
-            icon: Icon(Icons.person_2_outlined),
+            selectedIcon: Icon(Icons.person_2, color: Colors.blue,),
+            icon: Icon(Icons.person_2),
             label: 'Profile',
           ),
         ],

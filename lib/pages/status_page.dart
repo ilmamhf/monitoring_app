@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'form_status_gizi.dart';
+
 class StatusPage extends StatelessWidget {
   const StatusPage({super.key});
 
@@ -32,7 +34,7 @@ class StatusPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _print,
+        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FormStatusGizi())),
         child: const Icon(Icons.add),
       ),
     );
