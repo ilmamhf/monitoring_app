@@ -1,20 +1,76 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_projek_app/components/my_button.dart';
-import 'package:flutter_projek_app/components/my_textfield.dart';
+import '../components/my_button.dart';
+import '../components/my_textfield.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+import '../components/skip_button.dart';
+import 'home_page.dart';
 
+class LoginPage extends StatefulWidget {
+  final Function()? onTap;
+  LoginPage({super.key, required this.onTap});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   // text editing controllers
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   // sign user method
   void signUserIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+    );
+
+    // try sign in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: emailController.text, 
       password: passwordController.text,
+      );
+      // pop the loading circle
+      Navigator.pop(context);
+
+    } on FirebaseAuthException catch (e) {
+      // pop the loading circle
+      Navigator.pop(context);
+
+      // show error message
+      if (e.code == 'user-not-found') {
+        showErrorMessage('Wrong email');
+      } else if (e.code == 'wrong-password') {
+        showErrorMessage('Wrong password');
+      } else if (e.code == 'invalid-email') {
+        showErrorMessage('Email is invalid');
+      }
+    }
+
+    
+  }
+
+  // error message popup
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            message, 
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
     );
   }
 
@@ -26,10 +82,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         actions: [
-          IconButton(
-            onPressed: () {}, 
-            icon: const Icon(Icons.arrow_right_alt),
-            ),
+          SkipButton()
         ],
       ),
       body: SafeArea(
@@ -86,6 +139,7 @@ class LoginPage extends StatelessWidget {
           
               // sign in button
               MyButton(
+                text: "Sign In",
                 onTap: signUserIn,
               ),
 
@@ -144,16 +198,19 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20,),
           
               // register
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Not a member?"),
                   SizedBox(width: 4,),
-                  Text(
-                    "Register now",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: widget.onTap,
+                    child: const Text(
+                      "Register now",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   )
                 ],

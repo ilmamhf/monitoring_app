@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'aktifitas_page.dart';
+import 'profile_page.dart';
+import 'status_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -89,134 +93,14 @@ class _HomePageState extends State<HomePage> {
         ),
 
         /// Status page
-        Scaffold(
-          appBar: AppBar(title: const Text('Status Gizi'),),
-          body: const Center(
-            child: Column(
-              children: <Widget>[
-                Card(
-                  child: ListTile(
-                    leading: Icon(Icons.monitor_weight),
-                    title: Text('Status 2'),
-                    subtitle: Text('statistik'),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(Icons.monitor_weight),
-                    title: Text('Status 1'),
-                    subtitle: Text('statistik'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _print,
-            child: const Icon(Icons.add),
-          ),
-        ),
+        StatusPage(),
 
         /// Aktifitas page
-        Scaffold(
-          appBar: AppBar(title: const Text('Aktifitas Fisik'),),
-          body: const Center(
-            child: Column(
-              children: <Widget>[
-                Card(
-                  child: ListTile(
-                    leading: Icon(Icons.directions_run),
-                    title: Text('Aktifitas 2'),
-                    subtitle: Text('Isi aktifitas'),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(Icons.directions_run),
-                    title: Text('Aktifitas 1'),
-                    subtitle: Text('Isi aktifitas'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _print,
-            child: const Icon(Icons.add),
-          ),
-        ),
+        AktifitasPage(),
 
         /// Profile page
-        Scaffold(
-          appBar: AppBar(title: const Text('Profil'),),
-          body: ListView(
-            children: [
-              const SizedBox(height: 50,),
-          
-              // profile picture
-              const Icon(
-                Icons.person,
-                size: 72,
-              ),
-          
-              // username
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.only(left: 15, bottom: 15),
-                margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // judul
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Username", style: TextStyle(color: Colors.grey[500]),),
-          
-                        IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
-                      ],
-                    ),
-          
-                    // isi
-                    const Text("Yanto"),
-                  ],
-                ),
-              ),
-          
-              // email
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.only(left: 15, bottom: 15),
-                margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // judul
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Email", style: TextStyle(color: Colors.grey[500]),),
-          
-                        IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
-                      ],
-                    ),
-          
-                    // isi
-                    const Text("Yanto@email.com"),
-                  ],
-                ),
-              ),
-          
-              
-            ],
-          ),
-        )
+        ProfilePage(),
+
       ][currentPageIndex],
     );
   }

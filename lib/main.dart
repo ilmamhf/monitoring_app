@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'pages/auth_page.dart';
 import 'pages/home_page.dart';
-import 'pages/login_page.dart';
+import 'pages/login_or_register_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -26,6 +26,10 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: AuthPage(),
+      routes: {
+        "/homepage": (_) => HomePage(),
+        "/loginpage": (_) => LoginOrRegisterPage(),
+      },
     );
   }
 }
