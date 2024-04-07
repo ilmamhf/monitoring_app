@@ -4,10 +4,10 @@ class FirestoreService {
 
   // get collection of blocks
   final CollectionReference blocks =
-    FirebaseFirestore.instance.collection('blocks');
+    FirebaseFirestore.instance.collection('status gizi');
 
   // CREATE: add new block
-  Future<void> addStatusGizi(block) {
+  Future<void> addBlock(block) {
     return blocks.add({
       'Berat Badan': block.beratBadan,
       'Tinggi Badan': block.tinggiBadan,
