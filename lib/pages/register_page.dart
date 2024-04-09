@@ -7,7 +7,7 @@ import '../components/skip_button.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  RegisterPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -48,6 +48,8 @@ class _RegisterPageState extends State<RegisterPage> {
           // pop the loading circle
           Navigator.pop(context);
 
+          Navigator.pushReplacementNamed(context, '/homepage');
+
       } on FirebaseAuthException catch (e) {
           // pop the loading circle
           Navigator.pop(context);
@@ -85,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        actions: [
+        actions: const [
           SkipButton()
         ],
       ),
@@ -199,8 +201,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already have an account?"),
-                    SizedBox(width: 4,),
+                    const Text("Already have an account?"),
+                    const SizedBox(width: 4,),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(

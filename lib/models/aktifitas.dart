@@ -1,10 +1,10 @@
-class aktifitas {
+class Aktifitas {
   final String name;
   final String date;
   final int timeStart;
   final int timeEnd;
 
-  aktifitas({
+  Aktifitas({
     required this.name, 
     required this.date, 
     required this.timeStart, 

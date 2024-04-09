@@ -1,49 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'login_or_register_page.dart';
+import '../services/firebase_auth.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool isLoggedIn = false;
 
   user() {
     if (FirebaseAuth.instance.currentUser != null) {
-      isLoggedIn = true;
       return FirebaseAuth.instance.currentUser!.email;
     } else {
       return "User not logged in";
     }
   }
 
-  Widget _login(isLoggedIn) {
-    if (isLoggedIn) {
-      return IconButton(
-          onPressed: signUserOut, 
-          icon: Icon(Icons.logout)
-          );
-    } else {
+  Widget _login() {
+    if (!loginCheck()) {
       return GestureDetector(
         onTap: () {
           Navigator.pushReplacementNamed(context, "/loginpage");
         },
-        child: Text(
+        child: const Text(
           "Login    ", 
           style: TextStyle(color: Colors.blue),
         ),
       );
+    } else {
+      return IconButton(
+        onPressed: signUserOut, 
+        icon: const Icon(Icons.logout)
+        );
     }
   }
 
   // sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
+    Navigator.pushReplacementNamed(context, "/loginpage");
   }
 
   @override
@@ -52,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('Profil'),
         actions: [
-          _login(isLoggedIn)
+          _login()
           ]
         ),
       body: ListView(

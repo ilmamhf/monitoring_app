@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bottom Navigation Bar',
       debugShowCheckedModeBanner: false,
-      home: AuthPage(),
+      home: const AuthPage(),
       routes: {
-        "/homepage": (_) => HomePage(),
+        "/homepage": (_) => const HomePage(),
         "/loginpage": (_) => LoginOrRegisterPage(),
       },
     );

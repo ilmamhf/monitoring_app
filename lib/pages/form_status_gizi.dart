@@ -41,7 +41,7 @@ class FormStatusGizi extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Cek Status Gizi'),
+        title: const Text('Cek Status Gizi'),
       ),
       body: SafeArea(
         child: Center(

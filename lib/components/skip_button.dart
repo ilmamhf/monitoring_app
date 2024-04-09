@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SkipButton extends StatelessWidget {
-  SkipButton({super.key,});
+  const SkipButton({super.key,});
 
   @override
   Widget build(BuildContext context) {

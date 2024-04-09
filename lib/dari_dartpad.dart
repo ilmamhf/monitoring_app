@@ -32,7 +32,6 @@ class _NavigationExampleState extends State<NavigationExample> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -83,7 +82,7 @@ class _NavigationExampleState extends State<NavigationExample> {
                   margin: const EdgeInsets.all(10),
                   height: 150,
                   child: const Center(
-                    child: const Text("Status Gizi"),
+                    child: Text("Status Gizi"),
                   ),
                 ),
                 

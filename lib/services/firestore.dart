@@ -13,13 +13,28 @@ class FirestoreService {
       'Tinggi Badan': block.tinggiBadan,
       'IMT': block.IMT,
       'Kategori': block.kategoriIMT,
+      'timestamp' : Timestamp.now(),
       });
   }
 
   // READ: get blocks from database
+  Stream<QuerySnapshot> getGiziStream() {
+    final giziStream =
+      blocks.orderBy('timestamp', descending: true).snapshots();
+
+    return giziStream;
+  }
 
   // UPDATE: update blocks given a doc id
+  // Future<void> updateGizi(String docID, String newGizi) {
+  //   return blocks.doc(docID).update(
+  //     ''
+  //   )
+  // }
 
   // DELETE: delete blocks given a doc id
+  Future<void> deleteGizi(String docID) {
+    return blocks.doc(docID).delete();
+  }
 
 }

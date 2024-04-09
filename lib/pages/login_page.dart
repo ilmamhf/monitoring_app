@@ -4,11 +4,10 @@ import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 
 import '../components/skip_button.dart';
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
-  LoginPage({super.key, required this.onTap});
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -40,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
       );
       // pop the loading circle
       Navigator.pop(context);
+
+      Navigator.pushReplacementNamed(context, '/homepage');
 
     } on FirebaseAuthException catch (e) {
       // pop the loading circle
@@ -81,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        actions: [
+        actions: const [
           SkipButton()
         ],
       ),
@@ -201,8 +202,8 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Not a member?"),
-                  SizedBox(width: 4,),
+                  const Text("Not a member?"),
+                  const SizedBox(width: 4,),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(

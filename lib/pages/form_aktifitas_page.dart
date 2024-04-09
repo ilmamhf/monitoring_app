@@ -18,7 +18,7 @@ class FormAktifitasPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Tambah Aktifitas Fisik'),
+        title: const Text('Tambah Aktifitas Fisik'),
       ),
       body: SafeArea(
         child: Center(

@@ -5,10 +5,6 @@ import 'form_aktifitas_page.dart';
 class AktifitasPage extends StatelessWidget {
   const AktifitasPage({super.key});
 
-  void _print() {
-    print("tes");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
