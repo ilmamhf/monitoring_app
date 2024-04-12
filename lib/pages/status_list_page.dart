@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../components/date_picker.dart';
+import '../components/gizi_list_builder.dart';
 import '../components/my_button.dart';
 import '../services/firebase_auth.dart';
 import '../services/firestore.dart';
@@ -18,6 +19,10 @@ class _StatusPageState extends State<StatusPage> {
   // text editing controllers
   final dateAwalController = TextEditingController();
   final dateAkhirController = TextEditingController();
+
+  dynamic dateAwal; 
+  dynamic dateAkhir;
+  
 
   // firestore
   final FirestoreService firestoreService = FirestoreService();
@@ -71,14 +76,50 @@ class _StatusPageState extends State<StatusPage> {
           const SizedBox(height: 20),
 
           MyButton(
-            onTap: () {  }, 
-            text: 'Cari',
-          ),
+          onTap: () {
+            // Parse date strings from controllers to DateTime objects
+            DateTime? parsedDateAwal = DateTime.tryParse(dateAwalController.text);
+            DateTime? parsedDateAkhir = DateTime.tryParse(dateAkhirController.text);
+
+            // Check if parsing successful
+            if (parsedDateAwal != null && parsedDateAkhir != null) {
+              // Update dateAwal dan dateAkhir
+              setState(() {
+                dateAwal = parsedDateAwal;
+                dateAkhir = parsedDateAkhir;
+              });
+
+              // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
+            } else {
+              // Show error message if parsing fails
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Error'),
+                    content: const Text('Format tanggal tidak valid'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          }, 
+          text: 'Cari',
+        ),
 
           const SizedBox(height: 20),
 
           StreamBuilder<QuerySnapshot>(
-            stream: firestoreService.getGiziStream(),
+            stream: FirebaseFirestore.instance
+            .collection('status gizi') // Ganti dengan nama koleksi Firestore Anda
+            .where('timestamp', isGreaterThanOrEqualTo: dateAwal)
+            .where('timestamp', isLessThanOrEqualTo: dateAkhir)
+            .snapshots(),
             builder: (context, snapshot) {
               // login check
               if (loginCheck()) {
@@ -101,7 +142,16 @@ class _StatusPageState extends State<StatusPage> {
                         // get data from each doc
                         Map<String, dynamic> data =
                           document.data() as Map<String, dynamic>;
-                        Timestamp giziTime = data['timestamp'];
+
+                        // Handle null timestamp
+                        Timestamp giziTime;
+                        if(data.containsKey('timestamp') && data['timestamp'] != null) {
+                          giziTime = data['timestamp'] as Timestamp;
+                        } else {
+                          // Lakukan penanganan kesalahan atau atur nilai default jika field 'timestamp' null
+                          giziTime = Timestamp.now(); // Contoh: Menggunakan timestamp saat ini sebagai nilai default
+                        }
+                        
                         double giziBerat = data['Berat Badan'];
                         double giziTinggi = data['Tinggi Badan'];
                         double giziIMT = data['IMT'];

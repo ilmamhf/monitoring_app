@@ -25,6 +25,20 @@ class FirestoreService {
     return giziStream;
   }
 
+  // query date filter
+  Query<Object?> getGiziStreamWithFilter(dateAwal, dateAkhir) {
+    final giziQuery =
+      blocks.where(Filter.and(
+        Filter('timestamp', isGreaterThanOrEqualTo: dateAwal), 
+        Filter('timestamp', isGreaterThanOrEqualTo: dateAkhir),
+        )
+      );
+
+    return giziQuery;
+  }
+
+  
+
   // UPDATE: update blocks given a doc id
   // Future<void> updateGizi(String docID, String newGizi) {
   //   return blocks.doc(docID).update(
