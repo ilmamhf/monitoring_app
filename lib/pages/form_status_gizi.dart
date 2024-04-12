@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
+import '../components/number_textfield.dart';
 import '../models/status_gizi.dart';
 import '../services/firestore.dart';
 
@@ -34,6 +36,14 @@ class FormStatusGizi extends StatelessWidget {
     }
   }
 
+  // void submitStatusGizi() {
+  //   if (beratBadanController.value != double) {
+  //     showErrorMessage("Isi dengan angka!");
+  //     return;
+  //   }
+
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +73,7 @@ class FormStatusGizi extends StatelessWidget {
                 const SizedBox(height: 20),
             
                 // Berat Badan
-                MyTextField(
+                NumberField(
                   controller: beratBadanController,
                   hintText: 'Berat Badan dalam kg',
                   obscureText: false,
@@ -72,7 +82,7 @@ class FormStatusGizi extends StatelessWidget {
                 const SizedBox(height: 10),
             
                 // Tinggi Badan
-                MyTextField(
+                NumberField(
                   controller: tinggiBadanController,
                   hintText: 'Tinggi Badan dalam cm',
                   obscureText: false,

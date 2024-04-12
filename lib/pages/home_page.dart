@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'aktifitas_page.dart';
 import 'profile_page.dart';
-import 'status_page.dart';
+import 'status_list_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
     // final ThemeData theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: NavigationBar(
+        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
@@ -33,8 +34,8 @@ class _HomePageState extends State<HomePage> {
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.home, color: Colors.blue,),
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.home,),
+            label: 'Beranda',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.monitor_weight, color: Colors.blue,),
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           NavigationDestination(
             selectedIcon: Icon(Icons.person_2, color: Colors.blue,),
             icon: Icon(Icons.person_2),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),
@@ -57,36 +58,30 @@ class _HomePageState extends State<HomePage> {
         /// Home page
         Scaffold(
           appBar: AppBar(title: const Text('Beranda'),),
-          body: Center(
-            child: Column(
-              children: [
-                
-                // informasi status gizi
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.grey,
-                  ),
-                  margin: const EdgeInsets.all(10),
-                  height: 150,
-                  child: const Center(
-                    child: const Text("Status Gizi"),
-                  ),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text("Status Gizi", style: TextStyle(fontSize: 20),),
+                    Text(
+                      """
+                      \nStatus gizi merujuk pada kondisi nutrisi seseorang, yang mencakup asupan makanan dan penyerapan nutrisi dalam tubuh.
+                      \nSalah satu alat yang umum digunakan untuk mengukur status gizi adalah Indeks Masa Tubuh (IMT), yang memperhitungkan berat badan dan tinggi badan seseorang.
+                      \nBerdasarkan nilai IMT, seseorang dapat diklasifikasikan ke dalam kategori seperti sangat kurus, kurus, normal, gizi lebih, hingga obesitas.
+                      """),
+                    Text("\nAktivitas Fisik", style: TextStyle(fontSize: 20),),
+                    Text(
+                      """
+                      \nAktivitas fisik merujuk pada segala gerakan tubuh yang menghabiskan energi, penting untuk menjaga kesehatan dan kebugaran tubuh.
+                      \nPedoman kesehatan merekomendasikan setidaknya 150 menit aktivitas aerobik moderat atau 75 menit aktivitas aerobik intensitas tinggi setiap minggu, ditambah latihan kekuatan otot minimal dua kali seminggu.
+                      \nJenis aktivitas fisik sangat bervariasi, mulai dari olahraga formal seperti berlari atau berenang, hingga aktivitas sehari-hari seperti berjalan kaki atau membersihkan rumah. Pilihan aktivitas sebaiknya disesuaikan dengan kondisi fisik dan preferensi individu, yang terpenting adalah memilih aktivitas yang dapat dipertahankan secara teratur dan memberikan manfaat bagi kesehatan tubuh secara keseluruhan.
+                      """
+                    ),
+                  ],
                 ),
-                
-                // informasi aktifitas fisik
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Colors.grey,
-                  ),
-                  margin: const EdgeInsets.all(10),
-                  height: 150,
-                  child: const Center(
-                    child: Text("Aktifitas FIsik"),
-                  )
-                ),
-              ],
+              )
             ),
           )
         ),

@@ -202,12 +202,12 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Not a member?"),
+                  const Text("Belum memiliki akun?"),
                   const SizedBox(width: 4,),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(
-                      "Register now",
+                      "Register sekarang",
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
