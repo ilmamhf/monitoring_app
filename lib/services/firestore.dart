@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
 
   // get collection of blocks
   final CollectionReference blocks =
-    FirebaseFirestore.instance.collection('status gizi');
+    FirebaseFirestore.instance.collection('status gizi_${FirebaseAuth.instance.currentUser!.uid}');
 
   // CREATE: add new block
   Future<void> addBlock(block) {
@@ -17,25 +18,25 @@ class FirestoreService {
       });
   }
 
-  // READ: get blocks from database
-  Stream<QuerySnapshot> getGiziStream() {
-    final giziStream =
-      blocks.orderBy('timestamp', descending: true).snapshots();
+  // // READ: get blocks from database
+  // Stream<QuerySnapshot> getGiziStream() {
+  //   final giziStream =
+  //     blocks.orderBy('timestamp', descending: true).snapshots();
 
-    return giziStream;
-  }
+  //   return giziStream;
+  // }
 
-  // query date filter
-  Query<Object?> getGiziStreamWithFilter(dateAwal, dateAkhir) {
-    final giziQuery =
-      blocks.where(Filter.and(
-        Filter('timestamp', isGreaterThanOrEqualTo: dateAwal), 
-        Filter('timestamp', isGreaterThanOrEqualTo: dateAkhir),
-        )
-      );
+  // // query date filter
+  // Query<Object?> getGiziStreamWithFilter(dateAwal, dateAkhir) {
+  //   final giziQuery =
+  //     blocks.where(Filter.and(
+  //       Filter('timestamp', isGreaterThanOrEqualTo: dateAwal), 
+  //       Filter('timestamp', isLessThanOrEqualTo: Timestamp.fromDate(dateAkhir!)),
+  //       )
+  //     );
 
-    return giziQuery;
-  }
+  //   return giziQuery;
+  // }
 
   
 

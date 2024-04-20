@@ -70,6 +70,7 @@ class FormAktifitasPage extends StatelessWidget {
                 MyButton(
                   text: "Submit",
                   onTap: () {},
+                  size: 25,
                 ),
             
               ],

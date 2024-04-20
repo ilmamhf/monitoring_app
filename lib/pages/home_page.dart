@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../services/firebase_auth.dart';
 import 'aktifitas_page.dart';
 import 'profile_page.dart';
 import 'status_list_page.dart';
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> {
         ),
 
         /// Status page
-        StatusPage(),
+        loginCheck() ? StatusPage() : _buildNotLoggedInPage(), // Tampilkan StatusPage hanya jika pengguna sudah login
 
         /// Aktifitas page
         AktifitasPage(),
@@ -98,4 +99,30 @@ class _HomePageState extends State<HomePage> {
       ][currentPageIndex],
     );
   }
+  
+  Widget _buildNotLoggedInPage() {
+    return Container(
+      color: Colors.grey[300], // Set warna latar belakang menjadi abu-abu
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Silahkan Login Terlebih Dahulu"),
+
+            TextButton(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "/loginpage");
+              },
+              child: const Text(
+                "Login", 
+                style: TextStyle(color: Colors.blue),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
 }

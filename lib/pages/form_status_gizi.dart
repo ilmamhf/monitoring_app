@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../components/my_button.dart';
-import '../components/my_textfield.dart';
 import '../components/number_textfield.dart';
 import '../models/status_gizi.dart';
 import '../services/firestore.dart';
+import 'summary_gizi_page.dart';
 
 class FormStatusGizi extends StatelessWidget {
   FormStatusGizi({super.key});
@@ -107,9 +106,13 @@ class FormStatusGizi extends StatelessWidget {
                     // add to db
                     firestoreService.addBlock(gizi);
 
-                    // back
-                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => SummaryGizi(beratBadan: bb, tinggiBadan: tb, IMT: IMT, kategoriIMT: gizi.kategoriIMT, )));
+
+                    // // back
+                    // Navigator.pop(context);
                   },
+                  size: 25,
                 ),
             
               ],

@@ -142,6 +142,7 @@ class _LoginPageState extends State<LoginPage> {
               MyButton(
                 text: "Sign In",
                 onTap: signUserIn,
+                size: 25,
               ),
 
               const SizedBox(height: 30),
