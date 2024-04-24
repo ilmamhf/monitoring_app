@@ -4,6 +4,7 @@ import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 
 import '../components/skip_button.dart';
+import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -128,9 +129,14 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Colors.grey[600]),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FormForgotPassword()));
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
                     ),
                   ],
                 ),

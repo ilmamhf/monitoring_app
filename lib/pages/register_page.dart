@@ -91,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
           SkipButton()
         ],
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60.0),
