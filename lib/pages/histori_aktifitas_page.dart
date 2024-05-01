@@ -24,34 +24,6 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
   
   // firestore
   final FirestoreService firestoreService = FirestoreService();
-
-  // delete message popup
-  // void showDeleteMessage(docID) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         backgroundColor: Colors.white,
-  //         title: Text(
-  //           "Apakah kamu yakin ingin menghapus?", 
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               firestoreService.deleteGizi(docID);
-  //               Navigator.pop(context);
-  //               }, 
-  //             child: Text("Ya")),
-            
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context), 
-  //             child: Text("Tidak")),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
   
   // buat waktu mulai hari dan akhir hari
   DateTime endOfDay(DateTime date) {
@@ -69,10 +41,10 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
       body: Column(
         children: [
           
-          // list gizi
+          // list aktifitas
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-            .collection('status gizi_${FirebaseAuth.instance.currentUser!.uid}') // Ganti dengan nama koleksi Firestore Anda
+            .collection('aktifitas fisik_${FirebaseAuth.instance.currentUser!.uid}') // Ganti dengan nama koleksi Firestore Anda
             .where('timestamp', isGreaterThanOrEqualTo: widget.dateAwal != null ? Timestamp.fromDate(startOfDay(widget.dateAwal!)) : null)
             .where('timestamp', isLessThanOrEqualTo: widget.dateAkhir != null ? Timestamp.fromDate(endOfDay(widget.dateAkhir!)) : null)
             .orderBy('timestamp', descending: true)
@@ -82,18 +54,18 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
               if (loginCheck()) {
                 // if we have data, get all docs
                 if (snapshot.hasData) {
-                  List giziList = snapshot.data!.docs;
+                  List aktifitasList = snapshot.data!.docs;
           
-                  if (giziList.isEmpty) {
+                  if (aktifitasList.isEmpty) {
                     return const Center(child: Text("Histori kosong"));
                   } else {
                   // display as a list
                   return Expanded(
                     child: ListView.builder(
-                      itemCount: giziList.length,
+                      itemCount: aktifitasList.length,
                       itemBuilder: (context, index) {
                         // get individual doc
-                        DocumentSnapshot document = giziList[index];
+                        DocumentSnapshot document = aktifitasList[index];
                         String docID = document.id;
                               
                         // get data from each doc
@@ -101,18 +73,18 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
                           document.data() as Map<String, dynamic>;
 
                         // Handle null timestamp
-                        Timestamp giziTime;
+                        Timestamp aktifitasTime;
                         if(data.containsKey('timestamp') && data['timestamp'] != null) {
-                          giziTime = data['timestamp'] as Timestamp;
+                          aktifitasTime = data['timestamp'] as Timestamp;
                         } else {
                           // Lakukan penanganan kesalahan atau atur nilai default jika field 'timestamp' null
-                          giziTime = Timestamp.now(); // Contoh: Menggunakan timestamp saat ini sebagai nilai default
+                          aktifitasTime = Timestamp.now(); // Contoh: Menggunakan timestamp saat ini sebagai nilai default
                         }
                         
-                        double giziBerat = data['Berat Badan'];
-                        double giziTinggi = data['Tinggi Badan'];
-                        double giziIMT = data['IMT'];
-                        String giziKategori = data['Kategori'];
+                        double aktifitasBerat = data['Berat Badan'];
+                        double aktifitasTinggi = data['Tinggi Badan'];
+                        double aktifitasIMT = data['IMT'];
+                        String aktifitasKategori = data['Kategori'];
                               
                         // display as a list tile
                         return Padding(
@@ -132,12 +104,12 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
                               ),
                             child: ListTile(
                               title: Text(
-                                "Berat Badan : " + giziBerat.toStringAsFixed(1) + " kg" +
-                                "\nTinggi Badan : " + giziTinggi.toStringAsFixed(1) + " cm" +
-                                "\nNilai IMT : " + giziIMT.toStringAsFixed(1) +
-                                "\nKategori IMT : $giziKategori"
+                                "Berat Badan : " + aktifitasBerat.toStringAsFixed(1) + " kg" +
+                                "\nTinggi Badan : " + aktifitasTinggi.toStringAsFixed(1) + " cm" +
+                                "\nNilai IMT : " + aktifitasIMT.toStringAsFixed(1) +
+                                "\nKategori IMT : $aktifitasKategori"
                                 ),
-                              subtitle: Text(giziTime.toDate().toLocal().toString().split(" ")[0], textAlign: TextAlign.right,),
+                              subtitle: Text(aktifitasTime.toDate().toLocal().toString().split(" ")[0], textAlign: TextAlign.right,),
                               trailing: Ink(
                                 child: IconButton.filled(
                                   onPressed: () => (),

@@ -9,6 +9,7 @@ import 'form_status_gizi.dart';
 class HistoriGiziPage extends StatefulWidget {
   final DateTime? dateAwal;
   final DateTime? dateAkhir;
+  
   const HistoriGiziPage({
     super.key, 
     required this.dateAwal, 

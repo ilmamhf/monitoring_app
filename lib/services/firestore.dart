@@ -7,6 +7,9 @@ class FirestoreService {
   final CollectionReference blocks =
     FirebaseFirestore.instance.collection('status gizi_${FirebaseAuth.instance.currentUser!.uid}');
 
+  final CollectionReference blokAktifitas =
+    FirebaseFirestore.instance.collection('aktifitas fisik_${FirebaseAuth.instance.currentUser!.uid}');
+
   // CREATE: add new block
   Future<void> addBlock(block) {
     return blocks.add({
@@ -15,6 +18,15 @@ class FirestoreService {
       'IMT': block.IMT,
       'Kategori': block.kategoriIMT,
       'timestamp' : Timestamp.now(),
+      });
+  }
+
+  Future<void> addAktifitas(aktifitas) {
+    return blokAktifitas.add({
+      'Tingkat Aktifitas': aktifitas.tingkatAktifitas,
+      'Jenis Aktifitas': aktifitas.jenisAktifitas,
+      'Durasi': aktifitas.duration,
+      'timestamp': Timestamp.now(),
       });
   }
 

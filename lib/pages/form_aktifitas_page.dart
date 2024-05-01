@@ -16,10 +16,12 @@ class FormAktifitasPage extends StatefulWidget {
 
 class _FormAktifitasPageState extends State<FormAktifitasPage> {
   final FirestoreService firestoreService = FirestoreService();
+
   final dateController = TextEditingController();
   final timeAwalController = TextEditingController();
   final timeAkhirController = TextEditingController();
-  String tingkatAktifitasController = 'Tidak ada';
+
+  String tingkatAktifitasController = 'Tidak ada aktifitas';
   String jenisAktifitasController = '';
   List<String> listAktifitasSedang = [
     'Olahraga ringan',
@@ -34,8 +36,8 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
     'Perbaikan rumah'
   ];
   DateTime? date;
-  String tA = 'Tidak ada';
-  String jA = 'Tidak ada';
+  String? tA;
+  String? jA;
 
   int calculateDurationInMinutes(TimeOfDay startTime, TimeOfDay endTime) {
     final startMinutes = startTime.hour * 60 + startTime.minute;
@@ -157,18 +159,41 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
                       ),
                     );
 
-                    Aktifitas aktifitas = Aktifitas(
-                      tingkatAktifitas: tA,
-                      jenisAktifitas: jA,
-                      duration: durationInMinutes,
-                    );
+                    // check apakah ada data
+                    if (tA != null && jA != null && tA != 'Tidak ada' && jA != 'Tidak ada') {
+                      Aktifitas aktifitas = Aktifitas(
+                        tingkatAktifitas: tA!,
+                        jenisAktifitas: jA!,
+                        duration: durationInMinutes,
+                        
+                      );
 
-                    print(aktifitas);
-                    // add to db
-                    // firestoreService.addBlock(aktifitas);
+                      print(aktifitas.duration);
+                      // add to db
+                      firestoreService.addAktifitas(aktifitas);
 
-                    // Navigator.push(context, MaterialPageRoute(
-                    //   builder: (context) => SummaryAktifitas()));
+                      // Navigator.push(context, MaterialPageRoute(
+                      //   builder: (context) => SummaryAktifitas()));
+                    } else {
+                      // Show error message if parsing fails
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text(
+                              'Harus ada aktifitas!', 
+                              textAlign: TextAlign.center,
+                              textScaler: TextScaler.linear(1),),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   size: 25,
                 ),
