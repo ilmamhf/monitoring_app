@@ -20,6 +20,14 @@ class DropdownField extends StatefulWidget {
 }
 
 class _DropdownFieldState extends State<DropdownField> {
+  String _selectedItem = '';
+
+  @override
+  void initState() {
+    _selectedItem = widget.selectedItem;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,7 +37,9 @@ class _DropdownFieldState extends State<DropdownField> {
         dropdownDecoratorProps: DropDownDecoratorProps(
           dropdownSearchDecoration: InputDecoration(
             labelText: widget.hintText,
-            // hintText: hintText,
+            border: OutlineInputBorder(
+
+            )
           )
         ),
         validator: (String? item) {
@@ -38,9 +48,16 @@ class _DropdownFieldState extends State<DropdownField> {
           else
             return null;
         },
-        onChanged: widget.onChange,
+        onChanged: (newValue) {
+          setState(() {
+            _selectedItem = newValue!;
+          });
+          widget.onChange(newValue);
+        },
+        selectedItem: _selectedItem,
         popupProps: PopupProps.menu(
-          showSearchBox: true,
+          showSearchBox: false,
+          fit: FlexFit.loose,
           itemBuilder: (context, item, isSelected) {
             return ListTile(
               title: Text(item),
@@ -51,4 +68,11 @@ class _DropdownFieldState extends State<DropdownField> {
       ),
     );
   }
+
+  @override
+  void didUpdateWidget(DropdownField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _selectedItem = widget.selectedItem; // Update _selectedItem when widget is updated
+  }
+
 }
