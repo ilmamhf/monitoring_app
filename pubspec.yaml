@@ -40,6 +40,8 @@ dependencies:
   cloud_firestore: ^4.16.0
   date_time_format: ^2.0.1
   fl_chart: ^0.67.0
+  intl: ^0.19.0
+  dropdown_search: ^5.0.6
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class IMTLineChart extends StatelessWidget {
   final List<double> imtValues;
@@ -23,6 +24,11 @@ class IMTLineChart extends StatelessWidget {
   // Balikkan urutan data
   List<double> reversedIMTValues = imtValues.reversed.toList();
   List<Timestamp> reversedDates = dates.reversed.toList();
+
+   // Buat objek DateFormat untuk mengubah format tanggal
+  final dateFormat = DateFormat('dd-MM-yyyy');
+
+   Size size = MediaQuery.of(context).size;
 
     return LineChart(
       LineChartData(
@@ -55,7 +61,9 @@ class IMTLineChart extends StatelessWidget {
               interval: 1, // Atur interval sesuai kebutuhan Anda
               reservedSize: 22,
               getTitlesWidget: (value, meta) {
-                return Text(reversedDates[value.toInt()].toDate().toLocal().toString().split(" ")[0], style: TextStyle(fontSize: 12),); // Label dimulai dari 1
+                return  Text(dateFormat.format(reversedDates[value.toInt()].toDate()), 
+                            style: TextStyle(fontSize: 12),
+                        ); // Label dimulai dari 1
               },
             ),
           ),
@@ -63,12 +71,39 @@ class IMTLineChart extends StatelessWidget {
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
 
           // sb y kiri
-          leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles: AxisTitles(sideTitles: SideTitles(
+            showTitles: false)),
 
           // sb y kanan
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       ),
-      )
+
+      gridData: FlGridData(
+        show: false
+      ),
+      
+      borderData: FlBorderData(show: true),
+
+      lineTouchData: LineTouchData(
+        enabled: false,
+      ),
+
+      // showingTooltipIndicators: [
+      //   for (int j = 0; j < reversedIMTValues.length; j++)
+      //     ShowingTooltipIndicators([
+      //       LineBarSpot(
+      //         LineChartBarData(
+      //           spots: [
+      //             for (int i = 0; i < reversedIMTValues.length; i++)
+      //               FlSpot(i.toDouble(), double.parse(reversedIMTValues[i].toStringAsFixed(1))),
+      //           ],
+      //         ), 
+      //         j, 
+      //         FlSpot(j.toDouble(), reversedIMTValues[j]),
+      //       )
+      //     ])
+      // ],
+      ),
     );
   }
 }

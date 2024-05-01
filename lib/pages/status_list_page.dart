@@ -35,7 +35,7 @@ class _StatusPageState extends State<StatusPage> {
       builder: (context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: Text(
+          title: const Text(
             "Apakah kamu yakin ingin menghapus?",
             textAlign: TextAlign.center,
           ),
@@ -45,11 +45,11 @@ class _StatusPageState extends State<StatusPage> {
                 firestoreService.deleteGizi(docID);
                 Navigator.pop(context);
               },
-              child: Text("Ya"),
+              child: const Text("Ya"),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Tidak"),
+              child: const Text("Tidak"),
             ),
           ],
         );
@@ -68,6 +68,9 @@ class _StatusPageState extends State<StatusPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Status Gizi'),
@@ -148,10 +151,10 @@ class _StatusPageState extends State<StatusPage> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (!snapshot.hasData ||
                     snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text("Histori kosong"));
+                  return const Center(child: Text("Histori kosong"));
                 } else {
                   final imtValues = snapshot.data!.docs
                       .map<double>((doc) => doc['IMT'] as double)
@@ -163,12 +166,43 @@ class _StatusPageState extends State<StatusPage> {
                       .toList()
                       .take(5)
                       .toList();
-                  return Container(
-                    height: 200,
-                    padding: const EdgeInsets.all(8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: IMTLineChart(imtValues, dates),
+                  final kategori = snapshot.data!.docs
+                      .map<String>((doc) => doc['Kategori'] as String)
+                      .toList()
+                      .take(5)
+                      .toList();
+                  return Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text.rich(
+                                TextSpan(
+                                  children: <TextSpan>[
+                                  TextSpan(text: 'Nilai IMT terakhir anda adalah ${imtValues[0].toStringAsFixed(1)}, ' 
+                                  'Anda termasuk dalam kategori '),
+                                  
+                                  TextSpan(text: kategori[0], style: const TextStyle(fontWeight: FontWeight.bold),)
+                                ],
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                      
+                          Container(
+                            height: 200,
+                            width: size.width,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                              child: IMTLineChart(imtValues, dates),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }

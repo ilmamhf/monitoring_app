@@ -1,12 +1,11 @@
 class Aktifitas {
-  final String name;
-  final String date;
-  final int timeStart;
-  final int timeEnd;
+  final String tingkatAktifitas;
+  final String jenisAktifitas;
+  final int duration;
 
   Aktifitas({
-    required this.name, 
-    required this.date, 
-    required this.timeStart, 
-    required this.timeEnd});
+    required this.tingkatAktifitas,
+    required this.jenisAktifitas, 
+    required this.duration
+  });
 }

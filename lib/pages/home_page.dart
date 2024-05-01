@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
         loginCheck() ? StatusPage() : _buildNotLoggedInPage(), // Tampilkan StatusPage hanya jika pengguna sudah login
 
         /// Aktifitas page
-        AktifitasPage(),
+        loginCheck() ? AktifitasFisikPage() : _buildNotLoggedInPage(), // Tampilkan StatusPage hanya jika pengguna sudah login
 
         /// Profile page
         ProfilePage(),
