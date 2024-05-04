@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../components/date_picker.dart';
+import '../components/grafik_aktifitas.dart';
 import '../components/grafik_gizi.dart';
 import '../components/month_picker.dart';
 import '../components/my_button.dart';
@@ -28,6 +29,12 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
   DateTime? dateAkhir;
   DateTime selectedMonth = DateTime.now();
 
+  bool historiOnly = false;
+  bool searchPerformed = false;
+  bool searchSuccess = false;
+
+  int? weekOfMonth;
+
   // firestore
   final FirestoreService firestoreService = FirestoreService();
 
@@ -41,7 +48,7 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
   }
 
   void cekData() {
-    if (selectedMonth != DateTime.now()) {
+    if (historiOnly == true) {
       int daysInMonth = DateTime(selectedMonth.year, selectedMonth.month + 1, 0).day;
       DateTime awalBulan = DateTime(selectedMonth.year, selectedMonth.month, 1);
       DateTime akhirBulan = DateTime(selectedMonth.year, selectedMonth.month, daysInMonth);
@@ -52,10 +59,34 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
         dateAwal = awalBulan;
         dateAkhir = akhirBulan;
         selectedMonth = selectedMonth;
+        historiOnly = false;
+        searchPerformed = false;
+        searchSuccess = false;
       });
 
-      // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
+      return;
+    }
+
+    if (monthController.text != '') {
+      int daysInMonth = DateTime(selectedMonth.year, selectedMonth.month + 1, 0).day;
+      DateTime awalBulan = DateTime(selectedMonth.year, selectedMonth.month, 1);
+      DateTime akhirBulan = DateTime(selectedMonth.year, selectedMonth.month, daysInMonth);
+
+      print(awalBulan.toString() + akhirBulan.toString());
+      // Update dateAwal dan dateAkhir
+      setState(() {
+        dateAwal = awalBulan;
+        dateAkhir = akhirBulan;
+        selectedMonth = selectedMonth;
+        searchSuccess = true;
+        searchPerformed = false;
+      });
     } else {
+      setState(() {
+        searchPerformed = false;
+        searchSuccess = false;
+      });
+
       // Show error message if parsing fails
       showDialog(
         context: context,
@@ -75,6 +106,29 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
     }
   }
 
+  // // mencari minggu ke berapa sekarang
+  // void weekCheck() {
+  //   // Current date and time of system
+  //     String date = DateTime.now().toString();
+
+  //   // This will generate the time and date for first day of month
+  //     String firstDay = date.substring(0, 8) + '01' + date.substring(10);
+
+  //   // week day for the first day of the month
+  //     int weekDay = DateTime.parse(firstDay).weekday;
+
+  //     DateTime testDate = DateTime.now();
+
+  //   //  If your calender starts from Monday
+  //     weekDay--;
+  //     weekOfMonth = ((testDate.day + weekDay) / 7).ceil();
+  //     print('Week of the month: $weekOfMonth');
+  //     weekDay++;
+  //     setState(() {
+  //       weekOfMonth = ((testDate.day + weekDay) / 7).ceil();
+  //     });
+  // }
+
   @override
   Widget build(BuildContext context) {
 
@@ -93,6 +147,7 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
             onMonthChanged: (newMonth) { // Fungsi callback untuk memperbarui selectedMonth
             setState(() {
               selectedMonth = newMonth;
+              searchPerformed = false;
             });
           },
           ),
@@ -102,15 +157,20 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
           MyButton(
             onTap: () {
               
-              // Parse date strings from controllers to DateTime objects
-              DateTime? parsedMonth =
-                  DateTime.tryParse(monthController.text);
+              // // Parse date strings from controllers to DateTime objects
+              // DateTime? parsedMonth =
+              //     DateTime.tryParse(monthController.text);
               
-              print(parsedMonth);
-              print(selectedMonth);
+              // print(parsedMonth);
+              // print(selectedMonth);
 
               // Check if parsing successful
               cekData();
+
+              // Set searchPerformed to true when search button is pressed
+              setState(() {
+                searchPerformed = true;
+              });
             },
             text: 'Cari',
             size: 25,
@@ -118,6 +178,9 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
           const SizedBox(height: 20),
           MyButton(
             onTap: () {
+              historiOnly = true;
+              searchPerformed = false;
+
               // Check if parsing successful
               cekData();
 
@@ -134,11 +197,11 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
           ),
           const SizedBox(height: 20),
           // ngambil data buat grafik
-          if (dateAwal != null && dateAkhir != null)
+          if (searchPerformed && searchSuccess && dateAwal != null && dateAkhir != null)
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection(
-                      'status gizi_${FirebaseAuth.instance.currentUser!.uid}')
+                      'aktifitas fisik_${FirebaseAuth.instance.currentUser!.uid}')
                   .where('timestamp', isGreaterThanOrEqualTo: dateAwal != null ? Timestamp.fromDate(startOfDay(dateAwal!)) : null)
                   .where('timestamp', isLessThanOrEqualTo: dateAkhir != null ? Timestamp.fromDate(endOfDay(dateAkhir!)) : null)
                   .orderBy('timestamp', descending: true)
@@ -150,21 +213,35 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                     snapshot.data!.docs.isEmpty) {
                   return const Center(child: Text("Histori kosong"));
                 } else {
-                  final imtValues = snapshot.data!.docs
-                      .map<double>((doc) => doc['IMT'] as double)
-                      .toList()
-                      .take(5)
-                      .toList();
-                  final dates = snapshot.data!.docs
-                      .map<Timestamp>((doc) => doc['timestamp'] as Timestamp)
-                      .toList()
-                      .take(5)
-                      .toList();
-                  final kategori = snapshot.data!.docs
-                      .map<String>((doc) => doc['Kategori'] as String)
-                      .toList()
-                      .take(5)
-                      .toList();
+                  // // sekarang week ke brp
+                  // weekCheck();
+
+                  // cari total hari
+                  int daysInMonth = DateTime(selectedMonth.year, selectedMonth.month + 1, 0).day;
+                  List<int> patokanTanggal = [7, 14, 21, 28, 31]; // patokan utk cek timestamp
+                  List<int> total = [];
+                  List<String> labelMingguan = [];
+                  
+                  // bagi jadi 4 - 5 minggu
+                  for (int i = 0; i <= (daysInMonth/7).ceil() - 1; i++) {
+                    // tiap minggu ngapain
+                    total.add(0); // nambah item ke list
+                    labelMingguan.add('Minggu ke-${i+1}'); // nambah label sesuai jumlah minggu
+                    for (int j = 0; j < snapshot.data!.docs.length; j++) {
+                      // cek doc tsb ada di minggu berapa
+                      Timestamp timestamp = snapshot.data!.docs[j]['timestamp'];
+                      if (patokanTanggal[i] == 31) { // khusus minggu terakhir
+                        if (timestamp.toDate().day <= patokanTanggal[i] && timestamp.toDate().day > 28) {
+                          // di minggu i, totalnya nambah
+                          total[i] += 0 + snapshot.data!.docs[j]['Poin'] as int;
+                        }
+                      } else if (timestamp.toDate().day <= patokanTanggal[i] && timestamp.toDate().day > patokanTanggal[i] - 7) {
+                        // di minggu i, totalnya nambah
+                        total[i] += 0 + snapshot.data!.docs[j]['Poin'] as int;
+                      }
+                    }
+ 
+                  }
                   return Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -175,10 +252,9 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                               child: Text.rich(
                                 TextSpan(
                                   children: <TextSpan>[
-                                  TextSpan(text: 'Nilai IMT terakhir anda adalah ${imtValues[0].toStringAsFixed(1)}, ' 
-                                  'Anda termasuk dalam kategori '),
+                                  TextSpan(text: 'teks biasa '),
                                   
-                                  TextSpan(text: kategori[0], style: const TextStyle(fontWeight: FontWeight.bold),)
+                                  TextSpan(text: 'teks bold', style: const TextStyle(fontWeight: FontWeight.bold),)
                                 ],
                                 ),
                                 textAlign: TextAlign.center,
@@ -192,7 +268,7 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                              child: IMTLineChart(imtValues, dates),
+                              child: AktifitasLineChart(total, labelMingguan),
                             ),
                           ),
                         ],
@@ -207,12 +283,12 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
       floatingActionButton: !loginCheck()
           ? Container()
           : FloatingActionButton(
-              child: const Icon(
-                Icons.add,
-              ),
               backgroundColor: Colors.white,
               onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => FormAktifitasPage()))
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FormAktifitasPage())),
+              child: const Icon(
+                Icons.add,
+              )
             ),
     );
   }

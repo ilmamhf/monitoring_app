@@ -55,7 +55,7 @@ class AktifitasLineChart extends StatelessWidget {
 
         gridData: FlGridData(show: false),
         borderData: FlBorderData(show: true),
-        lineTouchData: LineTouchData(enabled: false),
+        lineTouchData: LineTouchData(enabled: true),
       ),
     );
   }
