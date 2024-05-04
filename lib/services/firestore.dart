@@ -11,12 +11,12 @@ class FirestoreService {
     FirebaseFirestore.instance.collection('aktifitas fisik_${FirebaseAuth.instance.currentUser!.uid}');
 
   // CREATE: add new block
-  Future<void> addBlock(block) {
+  Future<void> addGizi(gizi) {
     return blocks.add({
-      'Berat Badan': block.beratBadan,
-      'Tinggi Badan': block.tinggiBadan,
-      'IMT': block.IMT,
-      'Kategori': block.kategoriIMT,
+      'Berat Badan': gizi.beratBadan,
+      'Tinggi Badan': gizi.tinggiBadan,
+      'IMT': gizi.IMT,
+      'Kategori': gizi.kategoriIMT,
       'timestamp' : Timestamp.now(),
       });
   }
@@ -26,7 +26,8 @@ class FirestoreService {
       'Tingkat Aktifitas': aktifitas.tingkatAktifitas,
       'Jenis Aktifitas': aktifitas.jenisAktifitas,
       'Durasi': aktifitas.duration,
-      'timestamp': Timestamp.now(),
+      'Poin': aktifitas.poin,
+      'timestamp': aktifitas.timestamp,
       });
   }
 
@@ -62,6 +63,10 @@ class FirestoreService {
   // DELETE: delete blocks given a doc id
   Future<void> deleteGizi(String docID) {
     return blocks.doc(docID).delete();
+  }
+
+  Future<void> deleteAktifitas(String docID) {
+    return blokAktifitas.doc(docID).delete();
   }
 
 }

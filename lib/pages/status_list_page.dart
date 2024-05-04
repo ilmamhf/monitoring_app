@@ -24,6 +24,7 @@ class _StatusPageState extends State<StatusPage> {
 
   DateTime? dateAwal;
   DateTime? dateAkhir;
+  bool historiOnly = false;
 
   // firestore
   final FirestoreService firestoreService = FirestoreService();
@@ -66,6 +67,52 @@ class _StatusPageState extends State<StatusPage> {
     return DateTime(date.year, date.month, date.day);
   }
 
+  void parseCek() {
+    // Parse date strings from controllers to DateTime objects
+    DateTime? parsedDateAwal =
+        DateTime.tryParse(dateAwalController.text);
+    DateTime? parsedDateAkhir =
+        DateTime.tryParse(dateAkhirController.text);
+
+    if (historiOnly == true) {
+      // Update dateAwal dan dateAkhir
+      setState(() {
+        dateAwal = parsedDateAwal;
+        dateAkhir = parsedDateAkhir;
+        historiOnly = false;
+      });
+
+      return;
+    }
+    // Check if parsing successful
+    if (parsedDateAwal != null && parsedDateAkhir != null) {
+      // Update dateAwal dan dateAkhir
+      setState(() {
+        dateAwal = parsedDateAwal;
+        dateAkhir = parsedDateAkhir;
+      });
+
+      // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
+    } else {
+      // Show error message if parsing fails
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Format tanggal tidak valid'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -89,52 +136,27 @@ class _StatusPageState extends State<StatusPage> {
           const SizedBox(height: 20),
           MyButton(
             onTap: () {
-              // Parse date strings from controllers to DateTime objects
-              DateTime? parsedDateAwal =
-                  DateTime.tryParse(dateAwalController.text);
-              DateTime? parsedDateAkhir =
-                  DateTime.tryParse(dateAkhirController.text);
-
-              // Check if parsing successful
-              if (parsedDateAwal != null && parsedDateAkhir != null) {
-                // Update dateAwal dan dateAkhir
-                setState(() {
-                  dateAwal = parsedDateAwal;
-                  dateAkhir = parsedDateAkhir;
-                });
-
-                // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
-              } else {
-                // Show error message if parsing fails
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Error'),
-                      content: const Text('Format tanggal tidak valid'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
+              // cek data
+              parseCek();
             },
             text: 'Cari',
             size: 25,
           ),
           const SizedBox(height: 20),
           MyButton(
-            onTap: () => Navigator.push(
+            onTap: () { 
+              historiOnly = true;
+              
+              parseCek();
+              
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => HistoriGiziPage(
                           dateAwal: dateAwal,
                           dateAkhir: dateAkhir,
-                        ))),
+                        )));
+            },
             text: 'Lihat detail histori',
             size: 10,
           ),

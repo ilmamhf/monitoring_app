@@ -9,7 +9,7 @@ import 'form_aktifitas_page.dart';
 class HistoriAktifitasPage extends StatefulWidget {
   final DateTime? dateAwal;
   final DateTime? dateAkhir;
-
+  
   const HistoriAktifitasPage({
     super.key, 
     required this.dateAwal, 
@@ -24,6 +24,34 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
   
   // firestore
   final FirestoreService firestoreService = FirestoreService();
+
+  // delete message popup
+  void showDeleteMessage(docID) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            "Apakah kamu yakin ingin menghapus?", 
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                firestoreService.deleteAktifitas(docID);
+                Navigator.pop(context);
+                }, 
+              child: Text("Ya")),
+            
+            TextButton(
+              onPressed: () => Navigator.pop(context), 
+              child: Text("Tidak")),
+          ],
+        );
+      },
+    );
+  }
   
   // buat waktu mulai hari dan akhir hari
   DateTime endOfDay(DateTime date) {
@@ -81,10 +109,10 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
                           aktifitasTime = Timestamp.now(); // Contoh: Menggunakan timestamp saat ini sebagai nilai default
                         }
                         
-                        double aktifitasBerat = data['Berat Badan'];
-                        double aktifitasTinggi = data['Tinggi Badan'];
-                        double aktifitasIMT = data['IMT'];
-                        String aktifitasKategori = data['Kategori'];
+                        String tingkatAktifitas = data['Tingkat Aktifitas'];
+                        String jenisAktifitas = data['Jenis Aktifitas'];
+                        int durasi = data['Durasi'];
+                        int poin = data['Poin'];
                               
                         // display as a list tile
                         return Padding(
@@ -104,15 +132,15 @@ class _HistoriAktifitasPageState extends State<HistoriAktifitasPage> {
                               ),
                             child: ListTile(
                               title: Text(
-                                "Berat Badan : " + aktifitasBerat.toStringAsFixed(1) + " kg" +
-                                "\nTinggi Badan : " + aktifitasTinggi.toStringAsFixed(1) + " cm" +
-                                "\nNilai IMT : " + aktifitasIMT.toStringAsFixed(1) +
-                                "\nKategori IMT : $aktifitasKategori"
+                                "Tingkat Aktifitas : " + tingkatAktifitas +
+                                "\nJenis Aktifitas : " + jenisAktifitas +
+                                "\nDurasi : " + durasi.toString() + ' menit' +
+                                "\nNilai Aktifitas : " + poin.toString() + ' poin'
                                 ),
                               subtitle: Text(aktifitasTime.toDate().toLocal().toString().split(" ")[0], textAlign: TextAlign.right,),
                               trailing: Ink(
                                 child: IconButton.filled(
-                                  onPressed: () => (),
+                                  onPressed: () => showDeleteMessage(docID),
                                   icon: const Icon(Icons.delete),
                                   style: IconButton.styleFrom(
                                     backgroundColor: Colors.blue[200],

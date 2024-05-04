@@ -104,7 +104,7 @@ class FormStatusGizi extends StatelessWidget {
                       kategoriIMT: KategoriIMTCheck(IMT),
                     );
                     // add to db
-                    firestoreService.addBlock(gizi);
+                    firestoreService.addGizi(gizi);
 
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) => SummaryGizi(beratBadan: bb, tinggiBadan: tb, IMT: IMT, kategoriIMT: gizi.kategoriIMT, )));

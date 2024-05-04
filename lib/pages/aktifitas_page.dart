@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../components/date_picker.dart';
 import '../components/grafik_gizi.dart';
+import '../components/month_picker.dart';
 import '../components/my_button.dart';
 import '../services/firebase_auth.dart';
 import '../services/firestore.dart';
@@ -21,9 +22,11 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
   // text editing controllers
   final dateAwalController = TextEditingController();
   final dateAkhirController = TextEditingController();
+  final monthController = TextEditingController();
 
   DateTime? dateAwal;
   DateTime? dateAkhir;
+  DateTime selectedMonth = DateTime.now();
 
   // firestore
   final FirestoreService firestoreService = FirestoreService();
@@ -37,6 +40,41 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
     return DateTime(date.year, date.month, date.day);
   }
 
+  void cekData() {
+    if (selectedMonth != DateTime.now()) {
+      int daysInMonth = DateTime(selectedMonth.year, selectedMonth.month + 1, 0).day;
+      DateTime awalBulan = DateTime(selectedMonth.year, selectedMonth.month, 1);
+      DateTime akhirBulan = DateTime(selectedMonth.year, selectedMonth.month, daysInMonth);
+
+      print(awalBulan.toString() + akhirBulan.toString());
+      // Update dateAwal dan dateAkhir
+      setState(() {
+        dateAwal = awalBulan;
+        dateAkhir = akhirBulan;
+        selectedMonth = selectedMonth;
+      });
+
+      // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
+    } else {
+      // Show error message if parsing fails
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Format tanggal tidak valid'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -48,64 +86,49 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
       ),
       body: Column(
         children: [
-          DatePicker(
-            text: 'Tanggal awal',
-            dateController: dateAwalController,
+          MonthPicker(
+            text: 'Bulan dan Tahun',
+            monthController: monthController,
+            selectedMonth: selectedMonth,
+            onMonthChanged: (newMonth) { // Fungsi callback untuk memperbarui selectedMonth
+            setState(() {
+              selectedMonth = newMonth;
+            });
+          },
           ),
-          const SizedBox(height: 5),
-          DatePicker(
-            text: 'Tanggal akhir',
-            dateController: dateAkhirController,
-          ),
+          
           const SizedBox(height: 20),
+
           MyButton(
             onTap: () {
+              
               // Parse date strings from controllers to DateTime objects
-              DateTime? parsedDateAwal =
-                  DateTime.tryParse(dateAwalController.text);
-              DateTime? parsedDateAkhir =
-                  DateTime.tryParse(dateAkhirController.text);
+              DateTime? parsedMonth =
+                  DateTime.tryParse(monthController.text);
+              
+              print(parsedMonth);
+              print(selectedMonth);
 
               // Check if parsing successful
-              if (parsedDateAwal != null && parsedDateAkhir != null) {
-                // Update dateAwal dan dateAkhir
-                setState(() {
-                  dateAwal = parsedDateAwal;
-                  dateAkhir = parsedDateAkhir;
-                });
-
-                // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
-              } else {
-                // Show error message if parsing fails
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Error'),
-                      content: const Text('Format tanggal tidak valid'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
+              cekData();
             },
             text: 'Cari',
             size: 25,
           ),
           const SizedBox(height: 20),
           MyButton(
-            onTap: () => Navigator.push(
+            onTap: () {
+              // Check if parsing successful
+              cekData();
+
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => HistoriAktifitasPage(
                           dateAwal: dateAwal,
                           dateAkhir: dateAkhir,
-                        ))),
+                        )));
+            },
             text: 'Lihat detail histori',
             size: 10,
           ),

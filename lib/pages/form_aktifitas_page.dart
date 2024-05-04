@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../components/date_picker.dart';
@@ -6,6 +7,7 @@ import '../components/my_dropdown.dart';
 import '../components/time_picker.dart';
 import '../models/aktifitas.dart';
 import '../services/firestore.dart';
+import 'summary_aktifitas.dart';
 
 class FormAktifitasPage extends StatefulWidget {
   FormAktifitasPage({Key? key}) : super(key: key);
@@ -38,11 +40,33 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
   DateTime? date;
   String? tA;
   String? jA;
+  int poin = 0;
 
   int calculateDurationInMinutes(TimeOfDay startTime, TimeOfDay endTime) {
     final startMinutes = startTime.hour * 60 + startTime.minute;
     final endMinutes = endTime.hour * 60 + endTime.minute;
     return endMinutes - startMinutes;
+  }
+
+  void showErrorDialog(String teks) {
+    // Show error message if parsing fails
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            teks, 
+            textAlign: TextAlign.center,
+            textScaler: TextScaler.linear(1),),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -159,40 +183,60 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
                       ),
                     );
 
-                    // check apakah ada data
-                    if (tA != null && jA != null && tA != 'Tidak ada' && jA != 'Tidak ada') {
+                    // Ambil tanggal dari dateController
+                    final selectedDate = DateTime.parse(dateController.text);
+                    
+                    // Ambil waktu selesai dari timeAkhirController
+                    final endTime = TimeOfDay(
+                      hour: int.parse(timeAkhirController.text.split(':')[0]),
+                      minute: int.parse(timeAkhirController.text.split(':')[1]),
+                    );
+
+                    // Gabungkan tanggal dan waktu selesai menjadi satu objek DateTime
+                    final combinedDateTime = DateTime(
+                      selectedDate.year,
+                      selectedDate.month,
+                      selectedDate.day,
+                      endTime.hour,
+                      endTime.minute,
+                    );
+
+                    // Buat objek Timestamp dari combinedDateTime
+                    final timestamp = Timestamp.fromDate(combinedDateTime);
+
+                    if (tA == 'Aktifitas sedang') {
+                      poin = durationInMinutes * 4;
+                    } else if (tA == 'Aktifitas berat') {
+                      poin = durationInMinutes * 8;
+                    }
+
+                    // check apakah
+                    if (durationInMinutes < 0) {
+                      showErrorDialog('Format waktu tidak valid!');
+                    } else if (tA != null && jA != null && tA != 'Tidak ada' && jA != 'Tidak ada') {
                       Aktifitas aktifitas = Aktifitas(
                         tingkatAktifitas: tA!,
                         jenisAktifitas: jA!,
                         duration: durationInMinutes,
-                        
+                        poin: poin,
+                        timestamp: timestamp
                       );
 
                       print(aktifitas.duration);
                       // add to db
                       firestoreService.addAktifitas(aktifitas);
 
-                      // Navigator.push(context, MaterialPageRoute(
-                      //   builder: (context) => SummaryAktifitas()));
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SummaryAktifitas(
+                          tingkatAktifitas: tA!,
+                          jenisAktifitas: jA!,
+                          duration: durationInMinutes,
+                          poin: poin,
+                        )
+                      )
+                    );
                     } else {
-                      // Show error message if parsing fails
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text(
-                              'Harus ada aktifitas!', 
-                              textAlign: TextAlign.center,
-                              textScaler: TextScaler.linear(1),),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      showErrorDialog('Harus ada aktifitas!');
                     }
                   },
                   size: 25,
