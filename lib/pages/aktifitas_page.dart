@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../components/date_picker.dart';
 import '../components/grafik_aktifitas.dart';
-import '../components/grafik_gizi.dart';
 import '../components/month_picker.dart';
 import '../components/my_button.dart';
 import '../services/firebase_auth.dart';
 import '../services/firestore.dart';
 import 'form_aktifitas_page.dart';
 import 'histori_aktifitas_page.dart';
+import 'histori_harian_aktifitas_page.dart';
 
 class AktifitasFisikPage extends StatefulWidget {
   const AktifitasFisikPage({Key? key}) : super(key: key);
@@ -106,28 +105,13 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
     }
   }
 
-  // // mencari minggu ke berapa sekarang
-  // void weekCheck() {
-  //   // Current date and time of system
-  //     String date = DateTime.now().toString();
-
-  //   // This will generate the time and date for first day of month
-  //     String firstDay = date.substring(0, 8) + '01' + date.substring(10);
-
-  //   // week day for the first day of the month
-  //     int weekDay = DateTime.parse(firstDay).weekday;
-
-  //     DateTime testDate = DateTime.now();
-
-  //   //  If your calender starts from Monday
-  //     weekDay--;
-  //     weekOfMonth = ((testDate.day + weekDay) / 7).ceil();
-  //     print('Week of the month: $weekOfMonth');
-  //     weekDay++;
-  //     setState(() {
-  //       weekOfMonth = ((testDate.day + weekDay) / 7).ceil();
-  //     });
-  // }
+  TextSpan buildDailyTextSpan(int day, int durasiAKB, int durasiAKS) {
+    // Membuat TextSpan untuk satu hari
+    return TextSpan(
+      text: '\nHari ke-$day: Aktifitas sedang $durasiAKS menit, Aktifitas berat $durasiAKB menit\n',
+      style: TextStyle(color: Colors.black, fontSize: 14), // Sesuaikan gaya teks sesuai kebutuhan
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +180,28 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
             size: 10,
           ),
           const SizedBox(height: 20),
+          
+          MyButton(
+            onTap: () {
+              historiOnly = true;
+              searchPerformed = false;
+
+              // Check if parsing successful
+              cekData();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AktifitasHarianPage(
+                          dateAwal: dateAwal!,
+                          dateAkhir: dateAkhir!,
+                        )));
+            },
+            text: 'Lihat aktifitas harian',
+            size: 10,
+          ),
+          const SizedBox(height: 20),
+
           // ngambil data buat grafik
           if (searchPerformed && searchSuccess && dateAwal != null && dateAkhir != null)
             StreamBuilder<QuerySnapshot>(
@@ -240,8 +246,29 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                         total[i] += 0 + snapshot.data!.docs[j]['Poin'] as int;
                       }
                     }
- 
                   }
+
+                  // Inisialisasi list durasiAKB dan durasiAKS
+                  List<int> durasiAKB = List.filled(daysInMonth+1, 0);
+                  List<int> durasiAKS = List.filled(daysInMonth+1, 0);
+
+                  // Perulangan untuk mengisi durasi aktifitas berat (AKB) dan sedang (AKS)
+                  for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                    Timestamp timestamp = snapshot.data!.docs[i]['timestamp'];
+                    int day = timestamp.toDate().day; // Adjustment to match the list index
+                    print(day);
+                    
+                    String tingkatAktifitas = snapshot.data!.docs[i]['Tingkat Aktifitas'];
+                    int durasi = snapshot.data!.docs[i]['Durasi'] as int;
+                    
+                    if (tingkatAktifitas == 'Aktifitas berat') {
+                      durasiAKB[day] += 0 + durasi;
+                    } else if (tingkatAktifitas == 'Aktifitas sedang') {
+                      durasiAKS[day] += 0 + durasi;
+                    }
+                  }
+                  
+
                   return Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -252,9 +279,9 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                               child: Text.rich(
                                 TextSpan(
                                   children: <TextSpan>[
-                                  TextSpan(text: 'Berikut adalah grafik hasil aktifitas kamu di bulan '),
+                                  TextSpan(text: 'Berikut adalah grafik perkembangan aktifitas kamu di bulan '),
                                   
-                                  TextSpan(text: '${monthController.text}', style: const TextStyle(fontWeight: FontWeight.bold),)
+                                  TextSpan(text: '${monthController.text}', style: const TextStyle(fontWeight: FontWeight.bold),),
                                 ],
                                 ),
                                 textAlign: TextAlign.center,
@@ -269,6 +296,57 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 30.0),
                               child: AktifitasLineChart(total, labelMingguan),
+                            ),
+                          ),
+
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.all(Radius.circular(8))
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: <TextSpan>[
+                                      const TextSpan(text: '\nBerikut adalah resume hasil aktifitas kamu di bulan ', style: TextStyle(fontSize: 16),),
+                                      
+                                      TextSpan(text: '${monthController.text}\n', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                                  
+                                      for (int i = 1; i <= 7; i++)... [ // minggu 1
+                                        buildDailyTextSpan(i, durasiAKB[i], durasiAKS[i]),
+                                      ],
+                                      for (int i = 8; i <= 14; i++)... [ // minggu 2
+                                        buildDailyTextSpan(i, durasiAKB[i], durasiAKS[i]),
+                                      ],
+                                      for (int i = 15; i <= 21; i++)... [ // minggu 3
+                                        buildDailyTextSpan(i, durasiAKB[i], durasiAKS[i]),
+                                      ],
+                                  
+                                      if (daysInMonth == 28)... [ // minggu 4 & 5
+                                        for (int i = 22; i <= 28; i++)... [
+                                          buildDailyTextSpan(i, durasiAKB[i], durasiAKS[i]),
+                                        ],
+                                      ] else... [
+                                        for (int i = 22; i <= 28; i++)... [
+                                          buildDailyTextSpan(i, durasiAKB[i], durasiAKS[i]),
+                                        ],
+                                        for (int i = 29; i <= daysInMonth; i++)... [
+                                          buildDailyTextSpan(i, durasiAKB[i], durasiAKS[i]),
+                                        ],
+                                      ]
+                                      
+                                  
+                                  
+                                    ],
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],
