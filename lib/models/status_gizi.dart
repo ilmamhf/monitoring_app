@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class StatusGizi {
   final double beratBadan;
   final double tinggiBadan;
   final double IMT;
   final String kategoriIMT;
+  final Timestamp timestamp;
 
   StatusGizi({
   required this.beratBadan,
   required this.tinggiBadan,
   required this.IMT,
   required this.kategoriIMT,
+  required this.timestamp,
   });
 
   // factory StatusGizi.fromMap(Map<String, dynamic> map) {

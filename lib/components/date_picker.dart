@@ -24,7 +24,7 @@ class _DatePickerState extends State<DatePicker> {
           controller: this.widget.dateController,
           decoration: InputDecoration(
             isDense: true,
-            contentPadding: EdgeInsets.all(8),
+            contentPadding: EdgeInsets.all(12),
             hintText: this.widget.text,
             filled: true,
             enabledBorder: OutlineInputBorder(

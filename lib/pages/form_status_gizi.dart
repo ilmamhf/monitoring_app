@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../components/date_picker.dart';
 import '../components/my_button.dart';
 import '../components/number_textfield.dart';
 import '../models/status_gizi.dart';
@@ -15,6 +17,7 @@ class FormStatusGizi extends StatelessWidget {
   // text editing controllers
   final beratBadanController = TextEditingController();
   final tinggiBadanController = TextEditingController();
+  final dateController = TextEditingController();
 
   double bb = 0;
   double tb = 0;
@@ -86,6 +89,17 @@ class FormStatusGizi extends StatelessWidget {
                   hintText: 'Tinggi Badan dalam cm',
                   obscureText: false,
                 ),
+
+                const SizedBox(height: 10),
+
+                // tanggal
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: DatePicker(
+                    text: 'Tanggal',
+                    dateController: dateController,
+                  ),
+                ),
             
                 const SizedBox(height: 20),
             
@@ -97,17 +111,42 @@ class FormStatusGizi extends StatelessWidget {
                     tb = double.parse(tinggiBadanController.text);
                     IMT = bb / ((tb / 100) * (tb / 100));
 
+                    // Ambil tanggal dari dateController
+                    final selectedDate = DateTime.parse(dateController.text);
+
+                    // Ambil waktu jam saat ini
+                    final currentTime = DateTime.now();
+                    
+                    // Gabungkan tanggal dan waktu
+                    final combinedDateTime = DateTime(
+                      selectedDate.year,
+                      selectedDate.month,
+                      selectedDate.day,
+                      currentTime.hour,
+                      currentTime.minute,
+                      currentTime.second,
+                    );
+
+                    // Buat objek Timestamp dari combinedDateTime
+                    final timestamp = Timestamp.fromDate(combinedDateTime);
+
                     StatusGizi gizi = StatusGizi(
                       beratBadan: bb,
                       tinggiBadan: tb,
                       IMT: IMT,
                       kategoriIMT: KategoriIMTCheck(IMT),
+                      timestamp: timestamp,
                     );
+                    
                     // add to db
                     firestoreService.addGizi(gizi);
 
                     Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SummaryGizi(beratBadan: bb, tinggiBadan: tb, IMT: IMT, kategoriIMT: gizi.kategoriIMT, )));
+                      builder: (context) => SummaryGizi(
+                        beratBadan: bb, 
+                        tinggiBadan: tb, 
+                        IMT: IMT, 
+                        kategoriIMT: gizi.kategoriIMT, )));
 
                     // // back
                     // Navigator.pop(context);

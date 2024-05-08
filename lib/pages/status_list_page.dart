@@ -67,6 +67,25 @@ class _StatusPageState extends State<StatusPage> {
     return DateTime(date.year, date.month, date.day);
   }
 
+  void errorMessage() {
+    // Show error message if parsing fails
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Format tanggal tidak valid'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void parseCek() {
     // Parse date strings from controllers to DateTime objects
     DateTime? parsedDateAwal =
@@ -85,7 +104,7 @@ class _StatusPageState extends State<StatusPage> {
       return;
     }
     // Check if parsing successful
-    if (parsedDateAwal != null && parsedDateAkhir != null) {
+    if (parsedDateAwal != null && parsedDateAkhir != null && !parsedDateAwal.isAfter(parsedDateAkhir)) {
       // Update dateAwal dan dateAkhir
       setState(() {
         dateAwal = parsedDateAwal;
@@ -94,22 +113,7 @@ class _StatusPageState extends State<StatusPage> {
 
       // firestoreService.getGiziStreamWithFilter(dateAwal, dateAkhir);
     } else {
-      // Show error message if parsing fails
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Format tanggal tidak valid'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      errorMessage();
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TimePicker extends StatefulWidget {
   final String text;
@@ -53,7 +54,10 @@ class _TimePickerState extends State<TimePicker> {
 
     if (_picked != null){
       setState(() {
-        this.widget.TimeController.text = '${_picked.hour}:${_picked.minute}';
+        var df = DateFormat("h:mm a");
+        var dt = df.parse(_picked.format(context));
+        var finaltime =  DateFormat('HH:mm').format(dt); 
+        widget.TimeController.text = finaltime;
       });
     }
   }

@@ -252,9 +252,9 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                               child: Text.rich(
                                 TextSpan(
                                   children: <TextSpan>[
-                                  TextSpan(text: 'teks biasa '),
+                                  TextSpan(text: 'Berikut adalah grafik hasil aktifitas kamu di bulan '),
                                   
-                                  TextSpan(text: 'teks bold', style: const TextStyle(fontWeight: FontWeight.bold),)
+                                  TextSpan(text: '${monthController.text}', style: const TextStyle(fontWeight: FontWeight.bold),)
                                 ],
                                 ),
                                 textAlign: TextAlign.center,

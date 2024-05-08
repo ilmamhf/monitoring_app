@@ -13,12 +13,16 @@ import '../services/firestore.dart';
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
   const RegisterPage({super.key, required this.onTap});
+  
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // firestore
+  final FirestoreService firestoreService = FirestoreService();
+  
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -66,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
             noHP: noHPController.text,
           );
 
-          FirestoreService().addUser(userProfile);
+          firestoreService.addUser(userProfile);
           
           // pop the loading circle
           Navigator.pop(context);
@@ -170,13 +174,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
 
                 // tanggal lahir
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                  child: DatePicker(
-                    dateController: tglLahirController,
-                    text: 'Tanggal Lahir',
-                    ),
-                ),
+                DatePicker(
+                  dateController: tglLahirController,
+                  text: 'Tanggal Lahir',
+                  ),
             
                 const SizedBox(height: 10),
 
@@ -267,7 +268,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 const SizedBox(height: 20,),
             
-                // login
+                // register
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

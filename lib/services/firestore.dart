@@ -10,6 +10,9 @@ class FirestoreService {
   final CollectionReference blokAktifitas =
     FirebaseFirestore.instance.collection('aktifitas fisik_${FirebaseAuth.instance.currentUser!.uid}');
 
+  final DocumentReference blokUser =
+    FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid);
+
   // CREATE: add new block
   Future<void> addGizi(gizi) {
     return blocks.add({
@@ -17,7 +20,7 @@ class FirestoreService {
       'Tinggi Badan': gizi.tinggiBadan,
       'IMT': gizi.IMT,
       'Kategori': gizi.kategoriIMT,
-      'timestamp' : Timestamp.now(),
+      'timestamp' : gizi.timestamp,
       });
   }
 
@@ -29,6 +32,15 @@ class FirestoreService {
       'Poin': aktifitas.poin,
       'timestamp': aktifitas.timestamp,
       });
+  }
+
+  Future<void> addUser(userProfile) {
+    return blokUser.set({
+      'Nama Lengkap': userProfile.nama,
+      'Tanggal': userProfile.tglLahir,
+      'Jenis Kelamin': userProfile.jenisKelamin,
+      'No HP': userProfile.noHP,
+    });
   }
 
   // // READ: get blocks from database

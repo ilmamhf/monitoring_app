@@ -51,9 +51,9 @@ class SummaryGizi extends StatelessWidget {
             ] else if (kategoriIMT == "Normal") ...[
               giziOutput("Wah hasil IMT kamu normal! artinya pola makan kamu udah bagus, pertahanin!", 3)
             ] else if (kategoriIMT == "Gizi Lebih") ...[
-              giziOutput("Anjay bergizi lebih", 4)
+              giziOutput("Wah kamu termasuk kategori bergizi lebih, keren!", 4)
             ] else ...[
-              giziOutput("Diet bro", 1)
+              giziOutput("Duh, sebaiknya kamu perlu melakukan lebih banyak aktifitas dan menjaga pola makan deh!", 1)
             ],
 
             const SizedBox(height: 20),

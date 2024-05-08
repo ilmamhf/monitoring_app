@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => FormForgotPassword()));
                       },
                       child: Text(
-                        'Forgot Password?',
+                        'Lupa Password?',
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ),
@@ -151,57 +151,57 @@ class _LoginPageState extends State<LoginPage> {
                 size: 25,
               ),
 
-              const SizedBox(height: 30),
+              // const SizedBox(height: 30),
 
-              // or continue with
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or continue with',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // // or continue with
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: Divider(
+              //           thickness: 0.5,
+              //           color: Colors.grey[600],
+              //         ),
+              //       ),
+              //       Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              //         child: Text(
+              //           'Or continue with',
+              //           style: TextStyle(color: Colors.grey[600]),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Divider(
+              //           thickness: 0.5,
+              //           color: Colors.grey[600],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
           
-              // google sign in button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // google button
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.white,
-                      ),
-                    child: Image.asset(
-                      'assets/images/google.png',
-                      height: 40,
-                    ),
-                  )
-                ],
-              ),
+              // // google sign in button
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     // google button
+              //     Container(
+              //       padding: const EdgeInsets.all(5),
+              //       decoration: BoxDecoration(
+              //         border: Border.all(color: Colors.grey),
+              //         borderRadius: BorderRadius.circular(8.0),
+              //         color: Colors.white,
+              //         ),
+              //       child: Image.asset(
+              //         'assets/images/google.png',
+              //         height: 40,
+              //       ),
+              //     )
+              //   ],
+              // ),
 
               const SizedBox(height: 20,),
           
