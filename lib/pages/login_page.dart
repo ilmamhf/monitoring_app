@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       // pop the loading circle
       Navigator.pop(context);
 
-      Navigator.pushReplacementNamed(context, '/homepage');
+      Navigator.pushReplacementNamed(context, '/verifypage');
 
     } on FirebaseAuthException catch (e) {
       // pop the loading circle

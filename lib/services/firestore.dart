@@ -37,7 +37,16 @@ class FirestoreService {
   Future<void> addUser(userProfile) {
     return blokUser.set({
       'Nama Lengkap': userProfile.nama,
-      'Tanggal': userProfile.tglLahir,
+      'Tanggal Lahir': userProfile.tglLahir,
+      'Jenis Kelamin': userProfile.jenisKelamin,
+      'No HP': userProfile.noHP,
+    });
+  }
+
+  Future<void> updateUser(userProfile) {
+    return blokUser.update({
+      'Nama Lengkap': userProfile.nama,
+      'Tanggal Lahir': userProfile.tglLahir,
       'Jenis Kelamin': userProfile.jenisKelamin,
       'No HP': userProfile.noHP,
     });

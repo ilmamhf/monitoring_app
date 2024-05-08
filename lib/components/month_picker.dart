@@ -52,7 +52,7 @@ class _MonthPickerState extends State<MonthPicker> {
     final picked = await showMonthPicker(
       context: context, 
       initialDate: widget.selectedMonth,
-      firstDate: DateTime(2000), 
+      firstDate: DateTime(1950), 
       lastDate: DateTime(2100),
     );
 

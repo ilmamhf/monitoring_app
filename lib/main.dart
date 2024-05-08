@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'pages/auth_page.dart';
+import 'pages/email_verification_page.dart';
 import 'pages/home_page.dart';
 import 'pages/login_or_register_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/homepage": (_) => const HomePage(),
         "/loginpage": (_) => LoginOrRegisterPage(),
+        "/verifypage": (_) => VerifyEmailPage(),
       },
     );
   }

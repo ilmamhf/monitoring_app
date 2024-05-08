@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
         /// Home page
         Scaffold(
           appBar: AppBar(title: const Text('Beranda'),),
-          body: SingleChildScrollView(
+          body: const SingleChildScrollView(
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
         loginCheck() ? AktifitasFisikPage() : _buildNotLoggedInPage(), // Tampilkan StatusPage hanya jika pengguna sudah login
 
         /// Profile page
-        ProfilePage(),
+        loginCheck() ? ProfilePage() : _buildNotLoggedInPage(), // Tampilkan StatusPage hanya jika pengguna sudah login
 
       ][currentPageIndex],
     );

@@ -37,9 +37,13 @@ class _DropdownFieldState extends State<DropdownField> {
         dropdownDecoratorProps: DropDownDecoratorProps(
           dropdownSearchDecoration: InputDecoration(
             labelText: widget.hintText,
-            border: OutlineInputBorder(
-
-            )
+            labelStyle: TextStyle(color: Colors.grey[400]),
+            enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
           )
         ),
         validator: (String? item) {

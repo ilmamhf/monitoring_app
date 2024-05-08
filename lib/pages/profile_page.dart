@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../components/my_button.dart';
+import '../components/text_display.dart';
 import '../services/firebase_auth.dart';
+import 'form_update_profil.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,11 +16,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
+  // user
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
   user() {
     if (FirebaseAuth.instance.currentUser != null) {
       return FirebaseAuth.instance.currentUser!.email;
     } else {
-      return "User not logged in";
+      return;
     }
   }
 
@@ -54,73 +61,59 @@ class _ProfilePageState extends State<ProfilePage> {
           _login()
           ]
         ),
-      body: ListView(
-        children: [
-          const SizedBox(height: 50,),
-      
-          // profile picture
-          const Icon(
-            Icons.person,
-            size: 72,
-          ),
-      
-          // username
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.only(left: 15, bottom: 15),
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection('users').doc(currentUser.uid).snapshots(),
+        builder: ((context, snapshot) {
+          // get user data
+          if (snapshot.hasData) {
+            final userData = snapshot.data!.data() as Map<String, dynamic>;
+            String nama = userData['Nama Lengkap'];
+
+            return ListView(
               children: [
-                // judul
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Username", style: TextStyle(color: Colors.grey[500]),),
-      
-                    IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
-                  ],
+                const SizedBox(height: 50,),
+            
+                // profile picture
+                const Icon(
+                  Icons.person,
+                  size: 72,
                 ),
-      
-                // isi
-                const Text("Yanto"),
-              ],
-            ),
-          ),
-      
-          // email
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.only(left: 15, bottom: 15),
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // judul
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Email", style: TextStyle(color: Colors.grey[500]),),
-      
-                    IconButton(onPressed: (){}, icon: const Icon(Icons.settings))
-                  ],
+            
+                // username
+                TextDisplay(
+                  judul: 'Nama',
+                  text: nama,
                 ),
-      
-                // isi
-                Text(user()),
+            
+                // email
+                TextDisplay(
+                  judul: 'Email',
+                  text: user()
+                ),
+
+                const SizedBox(height: 20),
+
+                // edit profil button
+                MyButton(
+                  text: "Ubah Profil",
+                  onTap: () =>
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => FormUpdateProfil())),
+                  size: 8,
+                ),
+            
+                
               ],
-            ),
-          ),
-      
-          
-        ],
-      ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error${snapshot.error}'),
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator(),);
+        }
+        ),
+      )
     );
   }
 }
