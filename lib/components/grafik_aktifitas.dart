@@ -44,7 +44,7 @@ class AktifitasLineChart extends StatelessWidget {
               interval: 1, 
               reservedSize: 22,
               getTitlesWidget: (value, meta) {
-                return Text(labels[value.toInt()], style: TextStyle(fontSize: 12)); 
+                return Text(labels[value.toInt()], style: TextStyle(fontSize: 8)); 
               },
             ),
           ),

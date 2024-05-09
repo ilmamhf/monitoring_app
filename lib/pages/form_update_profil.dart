@@ -26,6 +26,22 @@ class _FormUpdateProfilState extends State<FormUpdateProfil> {
   String kelaminController = '';
   final noHPController = TextEditingController();
 
+  // error message popup
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            message, 
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
+    );
+  }
+
 
   // void submitStatusGizi() {
   @override
@@ -104,24 +120,32 @@ class _FormUpdateProfilState extends State<FormUpdateProfil> {
                 MyButton(
                   text: "Perbarui Profil",
                   onTap: () {
+                    if (namaLengkapController.text.isEmpty ||
+                      tglLahirController.text.isEmpty ||
+                      kelaminController.isEmpty ||
+                      noHPController.text.isEmpty) {
+                      showErrorMessage("Tidak boleh ada yang kosong");
+                    } else {
+                      // Ambil tanggal dari dateController
+                      final tglLahir = DateTime.parse(tglLahirController.text);
+                      // Buat objek Timestamp dari combinedDateTime
+                      final timestamp = Timestamp.fromDate(tglLahir);
 
-                    // Ambil tanggal dari dateController
-                    final tglLahir = DateTime.parse(tglLahirController.text);
-                    // Buat objek Timestamp dari combinedDateTime
-                    final timestamp = Timestamp.fromDate(tglLahir);
+                      Profil userProfile = Profil(
+                        nama: namaLengkapController.text,
+                        tglLahir: timestamp,
+                        jenisKelamin: kelaminController,
+                        noHP: noHPController.text,
+                      );
 
-                    Profil userProfile = Profil(
-                      nama: namaLengkapController.text,
-                      tglLahir: timestamp,
-                      jenisKelamin: kelaminController,
-                      noHP: noHPController.text,
-                    );
-                    
-                    // add to db
-                    FirestoreService().updateUser(userProfile);
+                      // add to db
+                      FirestoreService().updateUser(userProfile);
 
-                    // // back
-                    // Navigator.pop(context);
+                      // back
+                      Navigator.pop(context);
+
+                      showErrorMessage("Profil berhasil diperbarui");
+                    }
                   },
                   size: 25,
                 ),

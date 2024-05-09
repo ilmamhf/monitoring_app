@@ -33,6 +33,7 @@ class _MonthPickerState extends State<MonthPicker> {
             isDense: true,
             contentPadding: EdgeInsets.all(8),
             hintText: widget.text,
+            hintStyle: TextStyle(color: Colors.grey[400]),
             filled: false,
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey)

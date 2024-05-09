@@ -180,27 +180,6 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
             size: 10,
           ),
           const SizedBox(height: 20),
-          
-          MyButton(
-            onTap: () {
-              historiOnly = true;
-              searchPerformed = false;
-
-              // Check if parsing successful
-              cekData();
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AktifitasHarianPage(
-                          dateAwal: dateAwal!,
-                          dateAkhir: dateAkhir!,
-                        )));
-            },
-            text: 'Lihat aktifitas harian',
-            size: 10,
-          ),
-          const SizedBox(height: 20),
 
           // ngambil data buat grafik
           if (searchPerformed && searchSuccess && dateAwal != null && dateAkhir != null)
@@ -303,8 +282,8 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.grey,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
                                   borderRadius: BorderRadius.all(Radius.circular(8))
                                 ),
                                 child: Padding(
@@ -312,7 +291,7 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
                                   child: Text.rich(
                                     TextSpan(
                                       children: <TextSpan>[
-                                      const TextSpan(text: '\nBerikut adalah resume hasil aktifitas kamu di bulan ', style: TextStyle(fontSize: 16),),
+                                      const TextSpan(text: 'Berikut adalah resume hasil aktifitas kamu di bulan ', style: TextStyle(fontSize: 16),),
                                       
                                       TextSpan(text: '${monthController.text}\n', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                                   
