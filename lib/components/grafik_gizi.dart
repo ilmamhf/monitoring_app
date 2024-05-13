@@ -7,17 +7,26 @@ class IMTLineChart extends StatelessWidget {
   final List<double> imtValues;
   final List<Timestamp> dates;
 
-  IMTLineChart(this.imtValues, this.dates);
+  IMTLineChart(this.imtValues, this.dates, {super.key});
 
-  LineChartBarData garis(double value, Color warna) {
+  LineChartBarData garis(double nilaiY, Color warna) {
     return LineChartBarData(
-      spots: [FlSpot(0, value), FlSpot(imtValues.length - 1, value)],
+      spots: [
+        if (imtValues.length < 2)... [
+          FlSpot(0, nilaiY), FlSpot(1, nilaiY),]
+        else
+          FlSpot(0, nilaiY), FlSpot(imtValues.length - 1, nilaiY)],
       isCurved: false,
       color: warna,
       barWidth: 2,
-      dotData: FlDotData(show: false)
+      dotData: FlDotData(show: false),
+      
     );
   }
+
+  final List<double> nilaiKategoriIMT = [15, 17.75, 20.25, 23.25, 26, 30];
+  final List<String> kategori = ['Sangat Kurus', 'Kurus', 'Normal/Ideal', 'Normal/Ideal', 'Gizi Lebih', 'Obesitas'];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +41,50 @@ class IMTLineChart extends StatelessWidget {
 
     return LineChart(
       LineChartData(
+        clipData: FlClipData.all(),
+        // bentuk grafik
+        minY: 12,
+        maxY: 33,
         lineBarsData: [
+          
+          // data x axis
           LineChartBarData(
             spots: [
+              if (imtValues.length < 2)... [
+                FlSpot(0, double.parse(reversedIMTValues[0].toStringAsFixed(1))),
+                FlSpot(1, double.parse(reversedIMTValues[0].toStringAsFixed(1)))
+                ]
+              else
               for (int i = 0; i < reversedIMTValues.length; i++)
                 FlSpot(i.toDouble(), double.parse(reversedIMTValues[i].toStringAsFixed(1))),
             ],
             isCurved: false,
             color: Colors.blue,
             barWidth: 5,
+            dotData: FlDotData(show: false),
+          ),
+
+          // // data y axis
+          LineChartBarData(
+            spots: [
+              FlSpot(1, 0), // biar minimal ada 2 titik x
+              for (int i = 0; i < nilaiKategoriIMT.length; i++)
+                FlSpot(0, nilaiKategoriIMT[i]),
+            ],
+            isCurved: false,
+            color: Colors.blue,
+            barWidth: 5,
+            show: false,
             dotData: FlDotData(show: false)
           ),
+
+
           // Sangat Kurus
           garis(17, Colors.red),
           // Kurus
-          garis(18.5, Colors.green),
+          garis(18.5, Colors.red),
+          // Normal
+          garis(21.75, Colors.green),
           // Normal
           garis(25, Colors.orange),
           // Gizi lebih
@@ -61,9 +99,15 @@ class IMTLineChart extends StatelessWidget {
               interval: 1, // Atur interval sesuai kebutuhan Anda
               reservedSize: 22,
               getTitlesWidget: (value, meta) {
-                return  Text(dateFormat.format(reversedDates[value.toInt()].toDate()), 
+                if (value < 2) { // kalo cuma 1 biar ttp ada garis
+                  return  Text(dateFormat.format(reversedDates[(0).toInt()].toDate()), 
+                            style: TextStyle(fontSize: 12),
+                        ); // Label cuma 1 tp jd 2
+                } else {
+                  return  Text(dateFormat.format(reversedDates[(value).toInt()].toDate()), 
                             style: TextStyle(fontSize: 12),
                         ); // Label dimulai dari 1
+                }
               },
             ),
           ),
@@ -71,9 +115,23 @@ class IMTLineChart extends StatelessWidget {
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
 
           // sb y kiri
-          leftTitles: AxisTitles(sideTitles: SideTitles(
-            showTitles: false)),
-
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              interval: 0.25,
+              reservedSize: size.width/6 + 5,
+              getTitlesWidget: (value, meta) {
+                print(value);
+                for (int i = 0; i < nilaiKategoriIMT.length; i++) {
+                  if (value == nilaiKategoriIMT[i]) {
+                    return Text(kategori[i], style: TextStyle(fontSize: 12));
+                  }
+                }
+                return Text(''); // Jika di luar jangkauan, kembalikan string kosong
+              },
+            ),
+          ),
+          
           // sb y kanan
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       ),
@@ -88,22 +146,8 @@ class IMTLineChart extends StatelessWidget {
         enabled: false,
       ),
 
-      // showingTooltipIndicators: [
-      //   for (int j = 0; j < reversedIMTValues.length; j++)
-      //     ShowingTooltipIndicators([
-      //       LineBarSpot(
-      //         LineChartBarData(
-      //           spots: [
-      //             for (int i = 0; i < reversedIMTValues.length; i++)
-      //               FlSpot(i.toDouble(), double.parse(reversedIMTValues[i].toStringAsFixed(1))),
-      //           ],
-      //         ), 
-      //         j, 
-      //         FlSpot(j.toDouble(), reversedIMTValues[j]),
-      //       )
-      //     ])
-      // ],
       ),
+      
     );
   }
 }

@@ -223,7 +223,7 @@ class _StatusPageState extends State<StatusPage> {
                             width: size.width,
                             padding: const EdgeInsets.all(8.0),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               child: IMTLineChart(imtValues, dates),
                             ),
                           ),
