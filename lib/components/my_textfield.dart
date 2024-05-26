@@ -18,35 +18,31 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          errorStyle: TextStyle(height: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(hintText, textAlign: TextAlign.left,),
 
-          hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey[400]),
-        ),
+          SizedBox(height: 5,),
 
-        // focusNode: node,
-        // autovalidateMode: AutovalidateMode.onUserInteraction,
-        // validator: (value) {
-        //   if(node.hasFocus) return null;
-        //   if (value!.isEmpty) return "";
-        //   return null;
-        // },
+          TextFormField(
+            
+            controller: controller,
+            obscureText: obscureText,
+
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade400),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+            ),
+          ),
+        ],
       ),
     );
   }

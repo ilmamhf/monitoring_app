@@ -110,162 +110,176 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        actions: const [
-          SkipButton()
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 60.0),
-            child: Form(
-              // key: _formKey,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   actions: const [
+      //     SkipButton()
+      //   ],
+      // ),
+      body: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // logo
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 20.0),
-                    child: Text("Register", 
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
-                    ),
+                  Container(
+                    height: 160,
+                    color: Colors.blue[900],
                   ),
-              
-                  const SizedBox(height: 20),
-              
-                  // email
-                  MyTextField(
-                    controller: emailController,
-                    hintText: 'Email',
-                    obscureText: false,
-                  ),
-              
-                  const SizedBox(height: 10),
-              
-                  // password
-                  MyTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obscureText: true,
-                  ),
-              
-                  const SizedBox(height: 10),
-              
-                  // confirm password
-                  MyTextField(
-                    controller: confirmPasswordController,
-                    hintText: 'Konfirmasi Password',
-                    obscureText: true,
-                  ),
-              
-                  const SizedBox(height: 30),
-              
-                  // Nama lengkap
-                  MyTextField(
-                    controller: namaLengkapController,
-                    hintText: 'Nama Lengkap',
-                    obscureText: false,
-                  ),
-              
-                  const SizedBox(height: 2),
-              
-                  // tanggal lahir
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                    child: DatePicker(
-                      dateController: tglLahirController,
-                      text: 'Tanggal Lahir',
-                      ),
-                  ),
-              
-                  const SizedBox(height: 2),
-              
-                  // jenis kelamin
-                  DropdownField(
-                    hintText: 'Jenis Kelamin',
-                    listString: const [
-                      'Pria',
-                      'Wanita',
-                    ],
-                    selectedItem: kelaminController,
-                    onChange: (newValue) {
-                      setState(() {
-                        kelaminController = newValue!;
-                      });
-                    },
-                  ),
-              
-                  const SizedBox(height: 10),
-              
-                  // no hp
-                  PhoneField(
-                    phoneController: noHPController,
-                  ),
-              
-                  const SizedBox(height: 10),
-              
-                  // sign up button
-                  MyButton(
-                    text: "Sign Up",
-                    onTap: () {
-                      // if (_formKey.currentState!.validate()) {
-                      //   // cek field jenis kelamin dan no hp kosong apa tidak, kalo kosong showErrorMessage
-                      //   if (kelaminController.isEmpty || noHPController.text.isEmpty) {
-                      //     showErrorMessage("Tidak boleh ada yang kosong");
-                      //   } else {
-                      //     // Jika tidak kosong, lakukan pendaftaran
-                      //     signUserUp();
-                      //   }
-                      // }
+            
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
 
-                      // cek field jenis kelamin dan no hp kosong apa tidak, kalo kosong showErrorMessage
-                        if (emailController.text.isEmpty ||
-                            passwordController.text.isEmpty ||
-                            confirmPasswordController.text.isEmpty ||
-                            namaLengkapController.text.isEmpty ||
-                            tglLahirController.text.isEmpty ||
-                            kelaminController.isEmpty ||
-                            noHPController.text.isEmpty) {
-                          showErrorMessage("Tidak boleh ada yang kosong");
-                        } else {
-                          // Jika tidak kosong, lakukan pendaftaran
-                          signUserUp();
-                        }
-                      
-                    },
-                    size: 25,
-                  ),
-              
-                  const SizedBox(height: 20,),
-              
-                  // login
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Sudah punya akun?"),
-                      const SizedBox(width: 4,),
-                      GestureDetector(
-                        onTap: widget.onTap,
-                        child: const Text(
-                          "Login sekarang",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
+                        // logo
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: Text("Register", 
+                            style: TextStyle(
+                              fontSize: 40,
+                            ),
                           ),
                         ),
-                      )
-                    ],
+                    
+                        const SizedBox(height: 20),
+                    
+                        // email
+                        MyTextField(
+                          controller: emailController,
+                          hintText: 'Email',
+                          obscureText: false,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                    
+                        // password
+                        MyTextField(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          obscureText: true,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                    
+                        // confirm password
+                        MyTextField(
+                          controller: confirmPasswordController,
+                          hintText: 'Konfirmasi Password',
+                          obscureText: true,
+                        ),
+                    
+                        const SizedBox(height: 30),
+                    
+                        // Nama lengkap
+                        MyTextField(
+                          controller: namaLengkapController,
+                          hintText: 'Nama Lengkap',
+                          obscureText: false,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                    
+                        // tanggal lahir
+                        DatePicker(
+                          dateController: tglLahirController,
+                          text: 'Tanggal Lahir',
+                          labelColor: Colors.white,
+                          ),
+                    
+                        const SizedBox(height: 10),
+                    
+                        // jenis kelamin
+                        DropdownField(
+                          hintText: 'Jenis Kelamin',
+                          listString: const [
+                            'Pria',
+                            'Wanita',
+                          ],
+                          selectedItem: kelaminController,
+                          onChange: (newValue) {
+                            setState(() {
+                              kelaminController = newValue!;
+                            });
+                          },
+                        ),
+                    
+                        const SizedBox(height: 10),
+                    
+                        // no hp
+                        PhoneField(
+                          phoneController: noHPController,
+                        ),
+                    
+                        const SizedBox(height: 10),
+                    
+                        // sign up button
+                        MyButton(
+                          text: "Sign Up",
+                          onTap: () {
+                            // if (_formKey.currentState!.validate()) {
+                            //   // cek field jenis kelamin dan no hp kosong apa tidak, kalo kosong showErrorMessage
+                            //   if (kelaminController.isEmpty || noHPController.text.isEmpty) {
+                            //     showErrorMessage("Tidak boleh ada yang kosong");
+                            //   } else {
+                            //     // Jika tidak kosong, lakukan pendaftaran
+                            //     signUserUp();
+                            //   }
+                            // }
+                    
+                            // cek field jenis kelamin dan no hp kosong apa tidak, kalo kosong showErrorMessage
+                              if (emailController.text.isEmpty ||
+                                  passwordController.text.isEmpty ||
+                                  confirmPasswordController.text.isEmpty ||
+                                  namaLengkapController.text.isEmpty ||
+                                  tglLahirController.text.isEmpty ||
+                                  kelaminController.isEmpty ||
+                                  noHPController.text.isEmpty) {
+                                showErrorMessage("Tidak boleh ada yang kosong");
+                              } else {
+                                // Jika tidak kosong, lakukan pendaftaran
+                                signUserUp();
+                              }
+                            
+                          },
+                          size: 25,
+                        ),
+                    
+                        const SizedBox(height: 20,),
+                    
+                        // login
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Sudah punya akun?"),
+                            const SizedBox(width: 4,),
+                            GestureDetector(
+                              onTap: widget.onTap,
+                              child: const Text(
+                                "Login sekarang",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+
+                        const SizedBox(height: 20),
+                    
+                      ],
+                    ),
                   ),
-              
                 ],
               ),
             ),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }

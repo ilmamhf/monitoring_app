@@ -87,6 +87,7 @@ class _FormUpdateProfilState extends State<FormUpdateProfil> {
                   child: DatePicker(
                     dateController: tglLahirController,
                     text: 'Tanggal Lahir',
+                    labelColor: Colors.white,
                     ),
                 ),
             

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../services/firebase_auth.dart';
 import 'aktifitas_page.dart';
-import 'aktifitasv2_page.dart';
 import 'profile_page.dart';
 import 'status_list_page.dart';
 

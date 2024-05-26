@@ -121,7 +121,6 @@ class IMTLineChart extends StatelessWidget {
               interval: 0.25,
               reservedSize: size.width/6 + 5,
               getTitlesWidget: (value, meta) {
-                print(value);
                 for (int i = 0; i < nilaiKategoriIMT.length; i++) {
                   if (value == nilaiKategoriIMT[i]) {
                     return Text(kategori[i], style: TextStyle(fontSize: 12));

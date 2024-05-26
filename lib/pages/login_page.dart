@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 
@@ -81,149 +82,110 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        actions: const [
-          SkipButton()
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.blue[900],
+      //   actions: const [
+      //     SkipButton()
+      //   ],
+      // ),
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // logo
-              const Padding(
-                padding: EdgeInsets.only(bottom: 20.0),
-                child: Text("Login", 
-                  style: TextStyle(
-                    fontSize: 60,
-                  ),
-                ),
+              Container(
+                height: 160,
+                color: Colors.blue[900],
               ),
 
-              const SizedBox(height: 20),
-          
-              // email
-              MyTextField(
-                controller: emailController,
-                hintText: 'Email',
-                obscureText: false,
-              ),
-
-              const SizedBox(height: 10),
-          
-              // password
-              MyTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
-                
-              ),
-
-              const SizedBox(height: 10),
-          
-              // forgot password?
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => FormForgotPassword()));
-                      },
-                      child: Text(
-                        'Lupa Password?',
-                        style: TextStyle(color: Colors.grey[600]),
+                    // judul
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Text("Login", 
+                        style: TextStyle(
+                          fontSize: 60,
+                        ),
                       ),
                     ),
+                
+                    const SizedBox(height: 20),
+                
+                    // email
+                    MyTextField(
+                      controller: emailController,
+                      hintText: 'Email',
+                      obscureText: false,
+                    ),
+                
+                    const SizedBox(height: 10),
+                
+                    // password
+                    MyTextField(
+                      controller: passwordController,
+                      hintText: 'Password',
+                      obscureText: true,
+                      
+                    ),
+                
+                    const SizedBox(height: 10),
+                
+                    // forgot password?
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => FormForgotPassword()));
+                            },
+                            child: Text(
+                              'Lupa Password?',
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                
+                    const SizedBox(height: 20),
+                
+                    // sign in button
+                    MyButton(
+                      text: "Login",
+                      onTap: signUserIn,
+                      size: 15,
+                    ),
+                
+                    const SizedBox(height: 20,),
+                
+                    // register
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Belum memiliki akun?"),
+                        const SizedBox(width: 4,),
+                        GestureDetector(
+                          onTap: widget.onTap,
+                          child: const Text(
+                            "Register sekarang",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                
                   ],
                 ),
               ),
-
-              const SizedBox(height: 20),
-          
-              // sign in button
-              MyButton(
-                text: "Sign In",
-                onTap: signUserIn,
-                size: 25,
-              ),
-
-              // const SizedBox(height: 30),
-
-              // // or continue with
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //   child: Row(
-              //     children: [
-              //       Expanded(
-              //         child: Divider(
-              //           thickness: 0.5,
-              //           color: Colors.grey[600],
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              //         child: Text(
-              //           'Or continue with',
-              //           style: TextStyle(color: Colors.grey[600]),
-              //         ),
-              //       ),
-              //       Expanded(
-              //         child: Divider(
-              //           thickness: 0.5,
-              //           color: Colors.grey[600],
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              // const SizedBox(height: 20),
-          
-              // // google sign in button
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     // google button
-              //     Container(
-              //       padding: const EdgeInsets.all(5),
-              //       decoration: BoxDecoration(
-              //         border: Border.all(color: Colors.grey),
-              //         borderRadius: BorderRadius.circular(8.0),
-              //         color: Colors.white,
-              //         ),
-              //       child: Image.asset(
-              //         'assets/images/google.png',
-              //         height: 40,
-              //       ),
-              //     )
-              //   ],
-              // ),
-
-              const SizedBox(height: 20,),
-          
-              // register
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Belum memiliki akun?"),
-                  const SizedBox(width: 4,),
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: const Text(
-                      "Register sekarang",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-
             ],
           ),
         ),

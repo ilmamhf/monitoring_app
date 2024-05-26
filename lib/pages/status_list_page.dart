@@ -131,11 +131,13 @@ class _StatusPageState extends State<StatusPage> {
           DatePicker(
             text: 'Tanggal awal',
             dateController: dateAwalController,
+            labelColor: Colors.white,
           ),
           const SizedBox(height: 5),
           DatePicker(
             text: 'Tanggal akhir',
             dateController: dateAkhirController,
+            labelColor: Colors.white,
           ),
           const SizedBox(height: 20),
           MyButton(

@@ -48,14 +48,29 @@ class FormStatusGizi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+    
     return Scaffold(
       resizeToAvoidBottomInset : false,
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 9, 53, 147),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('Cek Status Gizi'),
+        // backgroundColor: Color.fromARGB(255, 52, 79, 255),
+        backgroundColor: Color.fromARGB(255, 9, 53, 147),
+        title: Text(
+          'CEK STATUS GIZI\nGeMileActive', 
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: (size.height/12) / 3 - 3,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60.0),
@@ -63,13 +78,15 @@ class FormStatusGizi extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // logo
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 20.0),
-                  child: Text("Status Gizi Baru", 
-                    style: TextStyle(
-                      fontSize: 40,
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Container(
+                    width: size.width/3,
+                    height: size.width/3,
+                    child: Image(
+                      image: AssetImage('images/cek status gizi.jpeg'),
                     ),
-                  ),
+                  )
                 ),
             
                 const SizedBox(height: 20),
@@ -77,8 +94,9 @@ class FormStatusGizi extends StatelessWidget {
                 // Berat Badan
                 NumberField(
                   controller: beratBadanController,
-                  hintText: 'Berat Badan dalam kg',
+                  hintText: 'Berat Badan (kg)',
                   obscureText: false,
+                  labelColor: Colors.white,
                 ),
             
                 const SizedBox(height: 10),
@@ -86,19 +104,18 @@ class FormStatusGizi extends StatelessWidget {
                 // Tinggi Badan
                 NumberField(
                   controller: tinggiBadanController,
-                  hintText: 'Tinggi Badan dalam cm',
+                  hintText: 'Tinggi Badan (cm)',
                   obscureText: false,
+                  labelColor: Colors.white,
                 ),
 
                 const SizedBox(height: 10),
 
                 // tanggal
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: DatePicker(
-                    text: 'Tanggal',
-                    dateController: dateController,
-                  ),
+                DatePicker(
+                  text: 'Tanggal',
+                  dateController: dateController,
+                  labelColor: Colors.white,
                 ),
             
                 const SizedBox(height: 20),

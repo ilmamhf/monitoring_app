@@ -37,6 +37,7 @@ class _TimePickerState extends State<TimePicker> {
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black)
             ),
+            fillColor: Colors.white,
           ),
           readOnly: true,
           onTap: () {_selectTime();},

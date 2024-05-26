@@ -141,6 +141,7 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
                   child: DatePicker(
                     text: 'Tanggal',
                     dateController: dateController,
+                    labelColor: Colors.white,
                   ),
                 ),
 
