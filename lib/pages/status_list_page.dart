@@ -123,8 +123,22 @@ class _StatusPageState extends State<StatusPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 9, 53, 147),
       appBar: AppBar(
-        title: const Text('Status Gizi'),
+        // backgroundColor: Color.fromARGB(255, 52, 79, 255),
+        backgroundColor: Color.fromARGB(255, 9, 53, 147),
+        title: Text(
+          'HISTORI STATUS GIZI\nGeMileActive', 
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: (size.height/12) / 3 - 3,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Column(
         children: [
@@ -208,11 +222,12 @@ class _StatusPageState extends State<StatusPage> {
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text.rich(
                                 TextSpan(
+                                  style: TextStyle(color: Colors.white),
                                   children: <TextSpan>[
                                   TextSpan(text: 'Nilai IMT terakhir anda adalah ${imtValues[0].toStringAsFixed(1)}, ' 
                                   'Anda termasuk dalam kategori '),
                                   
-                                  TextSpan(text: kategori[0], style: const TextStyle(fontWeight: FontWeight.bold),)
+                                  TextSpan(text: kategori[0], style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue,))
                                 ],
                                 ),
                                 textAlign: TextAlign.center,

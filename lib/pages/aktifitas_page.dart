@@ -119,13 +119,28 @@ class _AktifitasFisikPageState extends State<AktifitasFisikPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 9, 53, 147),
       appBar: AppBar(
-        title: const Text('Aktifitas Fisik'),
+        // backgroundColor: Color.fromARGB(255, 52, 79, 255),
+        backgroundColor: Color.fromARGB(255, 9, 53, 147),
+        title: Text(
+          'HISTORI AKTIFITAS FISIK\nGeMileActive', 
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: (size.height/12) / 3 - 3,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Column(
         children: [
           MonthPicker(
             text: 'Bulan dan Tahun',
+            labelColor: Colors.white,
             monthController: monthController,
             selectedMonth: selectedMonth,
             onMonthChanged: (newMonth) { // Fungsi callback untuk memperbarui selectedMonth

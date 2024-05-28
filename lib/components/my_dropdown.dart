@@ -6,13 +6,15 @@ class DropdownField extends StatefulWidget {
   final List<String> listString;
   String selectedItem;
   final Function(String?) onChange;
+  final Color labelColor;
 
   DropdownField({
     super.key, 
     required this.hintText, 
     required this.listString,
     required this.selectedItem,
-    required this.onChange
+    required this.onChange,
+    required this.labelColor,
   });
 
   @override
@@ -35,9 +37,14 @@ class _DropdownFieldState extends State<DropdownField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.hintText, textAlign: TextAlign.left,),
+          Text(
+            widget.hintText, 
+            textAlign: TextAlign.left,
+            style: TextStyle(color: widget.labelColor),
+          ),
 
           SizedBox(height: 5,),
+
           DropdownSearch<String>(
             items: widget.listString,
             dropdownDecoratorProps: DropDownDecoratorProps(

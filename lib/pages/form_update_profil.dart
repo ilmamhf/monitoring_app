@@ -46,24 +46,42 @@ class _FormUpdateProfilState extends State<FormUpdateProfil> {
   // void submitStatusGizi() {
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       resizeToAvoidBottomInset : false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('Cek Status Gizi'),
+        // backgroundColor: Color.fromARGB(255, 52, 79, 255),
+        backgroundColor: Color.fromARGB(255, 9, 53, 147),
+        title: Text(
+          'PROFIL AKUN\nGeMileActive', 
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: (size.height/12) / 3 - 3,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
+                const SizedBox(height: 20,),
+
                 // logo
                 const Padding(
-                  padding: EdgeInsets.only(bottom: 20.0),
-                  child: Text("Profil Akun", 
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text("Ubah Profil", 
                     style: TextStyle(
                       fontSize: 40,
                     ),
@@ -82,20 +100,18 @@ class _FormUpdateProfilState extends State<FormUpdateProfil> {
                 const SizedBox(height: 10),
 
                 // tanggal lahir
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                  child: DatePicker(
-                    dateController: tglLahirController,
-                    text: 'Tanggal Lahir',
-                    labelColor: Colors.white,
-                    ),
-                ),
+                DatePicker(
+                  dateController: tglLahirController,
+                  text: 'Tanggal Lahir',
+                  labelColor: Colors.black,
+                  ),
             
                 const SizedBox(height: 10),
 
                 // jenis kelamin
                 DropdownField(
                   hintText: 'Jenis Kelamin',
+                  labelColor: Colors.black,
                   listString: const [
                     'Pria',
                     'Wanita',

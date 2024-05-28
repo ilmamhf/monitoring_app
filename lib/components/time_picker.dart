@@ -4,11 +4,14 @@ import 'package:intl/intl.dart';
 class TimePicker extends StatefulWidget {
   final String text;
   final TimeController;
+  final Color labelColor;
   
   const TimePicker({
     super.key, 
     required this.text, 
-    required this.TimeController});
+    required this.TimeController,
+    required this.labelColor,
+  });
 
   @override
   State<TimePicker> createState() => _TimePickerState();
@@ -22,26 +25,36 @@ class _TimePickerState extends State<TimePicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: TextField(
-          controller: this.widget.TimeController,
-          decoration: InputDecoration(
-            isDense: true,
-            contentPadding: EdgeInsets.all(8),
-            hintText: this.widget.text,
-            filled: true,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide.none
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)
-            ),
-            fillColor: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.text, 
+            textAlign: TextAlign.left,
+            style: TextStyle(color: widget.labelColor),
           ),
-          readOnly: true,
-          onTap: () {_selectTime();},
-        ),
+
+          SizedBox(height: 5,),
+          TextField(
+            controller: this.widget.TimeController,
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+              // hintText: this.widget.text,
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade400),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+            ),
+            readOnly: true,
+            onTap: () {_selectTime();},
+          ),
+        ],
       ),
     );
   }

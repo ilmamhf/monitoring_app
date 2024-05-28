@@ -6,14 +6,17 @@ class MonthPicker extends StatefulWidget {
   final String text;
   final monthController;
   DateTime selectedMonth;
-  final ValueChanged<DateTime> onMonthChanged; // Penambahan argumen
+  final ValueChanged<DateTime> onMonthChanged;
+  final Color labelColor;
   
   MonthPicker({
     super.key, 
     required this.text, 
     required this.monthController,
     required this.selectedMonth,
-    required this.onMonthChanged});
+    required this.onMonthChanged,
+    required this.labelColor,
+  });
 
   @override
   State<MonthPicker> createState() => _MonthPickerState();
@@ -25,26 +28,36 @@ class _MonthPickerState extends State<MonthPicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: TextField(
-          controller: widget.monthController,
-          decoration: InputDecoration(
-            isDense: true,
-            contentPadding: EdgeInsets.all(8),
-            hintText: widget.text,
-            hintStyle: TextStyle(color: Colors.grey[400]),
-            filled: false,
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey)
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade400)
-            ),
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.text, 
+            textAlign: TextAlign.left,
+            style: TextStyle(color: widget.labelColor),
           ),
-          readOnly: true,
-          onTap: () {_selectMonth(context: context);},
-        ),
+
+          SizedBox(height: 5,),
+
+          TextField(
+            controller: widget.monthController,
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade400),
+              ),
+              fillColor: Colors.white,
+              filled: true,
+            ),
+            readOnly: true,
+            onTap: () {_selectMonth(context: context);},
+          ),
+        ],
       ),
     );
   }

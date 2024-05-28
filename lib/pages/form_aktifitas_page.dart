@@ -71,29 +71,45 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+    
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 9, 53, 147),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('Cek Hasil Aktifitas Fisik'),
+        // backgroundColor: Color.fromARGB(255, 52, 79, 255),
+        backgroundColor: Color.fromARGB(255, 9, 53, 147),
+        title: Text(
+          'HISTORI AKTIFITAS FISIK\nGeMileActive', 
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: (size.height/12) / 3 - 3,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 60.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // judul
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 20.0),
-                  child: Text(
-                    "Aktifitas Fisik Baru",
-                    style: TextStyle(
-                      fontSize: 40,
+                // logo
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: Container(
+                    width: size.width/3,
+                    height: size.width/3,
+                    child: Image(
+                      image: AssetImage('images/cek aktifitas fisik.jpeg'),
                     ),
-                  ),
+                  )
                 ),
 
                 const SizedBox(height: 20),
@@ -101,6 +117,7 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
                 // tingkat aktifitas
                 DropdownField(
                   hintText: 'Tingkat Aktifitas',
+                  labelColor: Colors.white,
                   listString: [
                     'Tidak ada aktifitas',
                     'Aktifitas sedang',
@@ -115,10 +132,11 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
                   },
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 
                 // jenis aktifitas
                 DropdownField(
+                  labelColor: Colors.white,
                   hintText: 'Jenis Aktifitas',
                   listString: tingkatAktifitasController == 'Aktifitas sedang'
                       ? listAktifitasSedang
@@ -133,40 +151,34 @@ class _FormAktifitasPageState extends State<FormAktifitasPage> {
                   },
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 
                 // tanggal
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: DatePicker(
-                    text: 'Tanggal',
-                    dateController: dateController,
-                    labelColor: Colors.white,
-                  ),
+                DatePicker(
+                  text: 'Tanggal',
+                  dateController: dateController,
+                  labelColor: Colors.white,
                 ),
 
                 const SizedBox(height: 5),
                 
                 // waktu mulai dan selesai
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: TimePicker(
-                            text: 'waktu mulai',
-                            TimeController: timeAwalController),
-                      ),
-                      Expanded(
-                        child: TimePicker(
-                            text: 'waktu selesai',
-                            TimeController: timeAkhirController),
-                      )
-                    ],
-                  ),
+                TimePicker(
+                  text: 'waktu mulai',
+                  TimeController: timeAwalController,
+                  labelColor: Colors.white,
                 ),
-                const SizedBox(height: 10),
+
+                const SizedBox(height: 5),
+
+                TimePicker(
+                  text: 'waktu selesai',
+                  TimeController: timeAkhirController,
+                  labelColor: Colors.white,
+                ),
+
+                const SizedBox(height: 20),
+
                 MyButton(
                   text: "Submit",
                   onTap: () {

@@ -54,13 +54,30 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Profil'),
+        // backgroundColor: Color.fromARGB(255, 52, 79, 255),
+        backgroundColor: Color.fromARGB(255, 9, 53, 147),
+        title: Text(
+          'PROFIL AKUN\nGeMileActive', 
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: (size.height/12) / 3 - 3,
+            color: Colors.white
+          ),
+        ),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         actions: [
           _login()
           ]
-        ),
+      ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection('users').doc(currentUser.uid).snapshots(),
         builder: ((context, snapshot) {
@@ -78,12 +95,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   Icons.person,
                   size: 72,
                 ),
+
+                const SizedBox(height: 20),
             
                 // username
                 TextDisplay(
                   judul: 'Nama',
                   text: nama,
                 ),
+
+                const SizedBox(height: 20),
             
                 // email
                 TextDisplay(

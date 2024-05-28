@@ -188,7 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         DatePicker(
                           dateController: tglLahirController,
                           text: 'Tanggal Lahir',
-                          labelColor: Colors.white,
+                          labelColor: Colors.black,
                           ),
                     
                         const SizedBox(height: 10),
@@ -196,6 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         // jenis kelamin
                         DropdownField(
                           hintText: 'Jenis Kelamin',
+                          labelColor: Colors.black,
                           listString: const [
                             'Pria',
                             'Wanita',
